@@ -1,0 +1,8 @@
+.DS_Store
+
+libft/test.sh
+
+get_next_line/gnlTester
+
+ft_printf/ft_printf_tester
+ft_printf/printfTester
