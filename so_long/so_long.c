@@ -6,95 +6,33 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 15:00:58 by yejinkim          #+#    #+#             */
-/*   Updated: 2022/12/28 17:31:42 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2022/12/28 23:22:40 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-#include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-void malloc_map(t_vars *vars)
+void exit_game(t_vars *vars)
 {
-	int i;
-	int fd;
-
-	fd = open("./map.ber", O_RDONLY);
-	i=0;
-	vars->map = malloc(sizeof(char *) * vars->h);
-	while (i < vars->h)
-	{
-		vars->map[i] = malloc(sizeof(char) * vars->w + 1);
-		vars->map[i] = get_next_line(fd);
-		printf("%s", vars->map[i]);
-		i++;
-	}
-	printf("\n");
-	close(fd);
-}
-
-void open_map(t_vars *vars)
-{
-	int		fd;
-	char	*line="init";
-	int h=0;
-	int w=0;
-
-	fd = open("./map.ber", O_RDONLY);
-	line = get_next_line(fd);
-	while (line[w])
-		w++;
-	while (line)
-	{
-		line = get_next_line(fd);
-		h++;
-	}
-	vars->h = h;
-	vars->w = w-1;
-	malloc_map(vars);
-	close(fd);
-}
-
-void put_img(t_vars *vars)
-{
-	int img_width;
-	int img_height;
-
-	void *cat = mlx_xpm_file_to_image(vars->mlx, "./images/cat.xpm", &img_width, &img_height);
-	void *land = mlx_xpm_file_to_image(vars->mlx, "./images/land.xpm", &img_width, &img_height);
-	void *wall = mlx_xpm_file_to_image(vars->mlx, "./images/wall.xpm", &img_width, &img_height);
-	void *exit = mlx_xpm_file_to_image(vars->mlx, "./images/exit.xpm", &img_width, &img_height);
-	void *mouse = mlx_xpm_file_to_image(vars->mlx, "./images/mouse.xpm", &img_width, &img_height);
-
-	int i;
-	int j;
-
-	i=0;
-	while (i<vars->w)
-	{
-		j=0;
-		while (j<vars->h)
-		{
-			mlx_put_image_to_window(vars->mlx, vars->win, land, i*64, j*64);
-			printf("%c", vars->map[j][i]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-		
-	mlx_put_image_to_window(vars->mlx, vars->win, cat, 0, 0);
-	mlx_put_image_to_window(vars->mlx, vars->win, mouse, 100, 0);
-	mlx_put_image_to_window(vars->mlx, vars->win, wall, 200, 0);
-	mlx_put_image_to_window(vars->mlx, vars->win, wall, 200, 64);
-	mlx_put_image_to_window(vars->mlx, vars->win, wall, 264, 64);
-	mlx_put_image_to_window(vars->mlx, vars->win, exit, 200, 128);
+	printf("GAME CLEAR!!!\n");
+	mlx_destroy_window(vars->mlx, vars->win);
+	exit(0);
 }
 
 void player_move(t_vars *vars, int x, int y)
 {
-
+	if (vars->map[vars->player_y + y][vars->player_x + x] == '0' || vars->map[vars->player_y + y][vars->player_x + x] == 'C')
+	{
+		printf("movements %d\n", ++vars->movements);
+		mlx_put_image_to_window(vars->mlx, vars->win, vars->land, vars->player_x * 64, vars->player_y * 64);
+		vars->player_x += x;
+		vars->player_y += y;
+		mlx_put_image_to_window(vars->mlx, vars->win, vars->cat, vars->player_x * 64, vars->player_y * 64);
+		if (vars->map[vars->player_y][vars->player_x] == 'C')
+			vars->collections--;
+	}
+	else if (vars->map[vars->player_y + y][vars->player_x + x] == 'E' && vars->collections == 0)
+		exit_game(vars);
 }
 
 int	key_hook(int keycode, t_vars *vars)
@@ -106,28 +44,29 @@ int	key_hook(int keycode, t_vars *vars)
 	else if (keycode == KEY_S)
 		player_move(vars, 0, 1);
 	else if (keycode == KEY_D)
-		player_move(vars, 0, 1);
-
-	printf("%d\n", keycode);
+		player_move(vars, 1, 0);
+	else if (keycode == KEY_ESC)
+		mlx_destroy_window(vars->mlx, vars->win);
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-
 	t_vars	vars;
 
-	open_map(&vars);
+	if (argc != 2)
+		return (0);
+	open_map(argv[1], &vars);
 
 	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, vars.w*64, vars.h*64, "so_long");
+	vars.win = mlx_new_window(vars.mlx, vars.width * 64, vars.height * 64, "so_long");
 	
+	set_image(&vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
 
 	put_img(&vars);
 	mlx_loop(&vars);
 
-
 	return (0);
-	// cc -lmlx -framework OpenGL -framework AppKit *.c
+	// cc -lmlx -framework OpenGL -framework AppKit *.c ./get_next_line/*.c
 }
