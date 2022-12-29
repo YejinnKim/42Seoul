@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.c                                              :+:      :+:    :+:   */
+/*   init_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 18:26:41 by yejinkim          #+#    #+#             */
-/*   Updated: 2022/12/28 22:41:35 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2022/12/29 22:34:26 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void set_vars(t_vars *vars)
+{
+	vars->collections = 0;
+	vars->plyaer_chk = 0;
+	vars->exit_chk = 0;
+	vars->movements = 0;	
+}
 
 void set_image(t_vars *vars)
 {
@@ -28,10 +36,9 @@ void put_img(t_vars *vars)
 {
 	int	i;
 	int	j;
-	int	cnt;
 
 	j = 0;
-	cnt = 0;
+	set_vars(vars);
 	while (j<vars->height)
 	{
 		i = 0;
@@ -43,36 +50,42 @@ void put_img(t_vars *vars)
 			else if (vars->map[j][i] == 'C')
 			{
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->mouse, i * 64, j * 64);
-				cnt++;
+				vars->collections++;
 			}
 			else if (vars->map[j][i] == 'E')
+			{
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->exit, i * 64, j * 64);
+				vars->exit_chk++;
+			}
 			else if (vars->map[j][i] == 'P')
 			{
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->cat, i * 64, j * 64);
 				vars->player_x = i;
 				vars->player_y = j;
-				vars->movements = 0;
+				vars->plyaer_chk++;
 				vars->map[j][i] = '0';
 			}
 			i++;
 		}
 		j++;
 	}
-	vars->collections = cnt;
 }
 
-void malloc_map(t_vars *vars)
+void malloc_map(char *filename, t_vars *vars)
 {
 	int i;
 	int fd;
 
-	fd = open("./map.ber", O_RDONLY);
+	fd = open(filename, O_RDONLY);
 	i=0;
 	vars->map = malloc(sizeof(char *) * vars->height);
+	if (!vars->map)
+		destroy_game(vars, 0);
 	while (i < vars->height)
 	{
 		vars->map[i] = malloc(sizeof(char) * vars->width + 1);
+		if (!vars->map[i])
+			destroy_game(vars, 0);
 		vars->map[i] = get_next_line(fd);
 		i++;
 	}
@@ -99,6 +112,6 @@ void open_map(char *filename, t_vars *vars)
 	}
 	vars->height = height;
 	vars->width = width-1;
-	malloc_map(vars);
+	malloc_map(filename, vars);
 	close(fd);
 }
