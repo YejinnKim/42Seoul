@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 17:06:06 by yejinkim          #+#    #+#             */
-/*   Updated: 2022/12/29 22:31:43 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2022/12/30 17:10:12 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void set_image(t_vars *vars);
 void check_map(t_vars *vars);
 void set_vars(t_vars *vars);
 int destroy_game(t_vars *vars, int flag);
+int check_line(char *line, int i, t_vars *vars);
 
 char	*get_next_line(int fd);
 size_t  ft_strlen(const char *s);
