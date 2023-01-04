@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_map.c                                         :+:      :+:    :+:   */
+/*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 18:26:41 by yejinkim          #+#    #+#             */
-/*   Updated: 2022/12/30 19:38:21 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/04 23:20:57 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	set_vars(t_vars *vars)
 {
-	vars->collections = 0;
-	vars->plyaer_chk = 0;
-	vars->exit_chk = 0;
+	vars->c_chk = 0;
+	vars->p_chk = 0;
+	vars->e_chk = 0;
 	vars->movements = 0;
 }
 
@@ -26,15 +26,16 @@ void	set_image(t_vars *vars)
 	int	img_height;
 
 	vars->cat = mlx_xpm_file_to_image(vars->mlx, \
-		"./images/cat.xpm", &img_width, &img_height);
+		"./textures/cat.xpm", &img_width, &img_height);
 	vars->land = mlx_xpm_file_to_image(vars->mlx, \
-		"./images/land.xpm", &img_width, &img_height);
+		"./textures/land.xpm", &img_width, &img_height);
 	vars->wall = mlx_xpm_file_to_image(vars->mlx, \
-		"./images/wall.xpm", &img_width, &img_height);
+		"./textures/wall.xpm", &img_width, &img_height);
 	vars->exit = mlx_xpm_file_to_image(vars->mlx, \
-		"./images/exit.xpm", &img_width, &img_height);
+		"./textures/exit.xpm", &img_width, &img_height);
 	vars->mouse = mlx_xpm_file_to_image(vars->mlx, \
-		"./images/mouse.xpm", &img_width, &img_height);
+		"./textures/mouse.xpm", &img_width, &img_height);
+	put_img(vars);
 }
 
 void	put_img(t_vars *vars)
@@ -42,12 +43,11 @@ void	put_img(t_vars *vars)
 	int	i;
 	int	j;
 
-	j = 0;
-	set_vars(vars);
-	while (j < vars->height)
+	j = -1;
+	while (++j < vars->h)
 	{
-		i = 0;
-		while (i < vars->width)
+		i = -1;
+		while (++i < vars->w)
 		{
 			mlx_put_image_to_window(vars->mlx, vars->win, vars->land, \
 				i * 64, j * 64);
@@ -55,30 +55,26 @@ void	put_img(t_vars *vars)
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->wall, \
 					i * 64, j * 64);
 			else if (vars->map[j][i] == 'C')
-			{
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->mouse, \
 					i * 64, j * 64);
-				vars->collections++;
-			}
 			else if (vars->map[j][i] == 'E')
-			{
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->exit, \
 					i * 64, j * 64);
-				vars->exit_chk++;
-			}
 			else if (vars->map[j][i] == 'P')
-			{
 				mlx_put_image_to_window(vars->mlx, vars->win, vars->cat, \
 					i * 64, j * 64);
-				vars->player_x = i;
-				vars->player_y = j;
-				vars->plyaer_chk++;
-				vars->map[j][i] = '0';
-			}
-			i++;
 		}
-		j++;
 	}
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = -1;
+	while (map[++i])
+		free(map[i]);
+	free(map);
 }
 
 void	malloc_map(char *filename, t_vars *vars)
@@ -89,21 +85,22 @@ void	malloc_map(char *filename, t_vars *vars)
 
 	fd = open(filename, O_RDONLY);
 	i = 0;
-	vars->map = malloc(sizeof(char *) * vars->height);
+	vars->map = malloc(sizeof(char *) * vars->h);
 	if (!vars->map)
-		destroy_game(vars, 0);
-	while (i < vars->height)
+		destroy_game(vars, "MALLOC ERROR!!!");
+	while (i < vars->h)
 	{
-		vars->map[i] = malloc(sizeof(char) * vars->width + 1);
+		vars->map[i] = malloc(sizeof(char) * vars->w + 1);
 		if (!vars->map[i])
-			destroy_game(vars, 0);
+			destroy_game(vars, "MALLOC ERROR!!!");
 		line = get_next_line(fd);
 		if (check_line(line, i, vars) == 0)
-			destroy_game(vars, 2);
+			destroy_game(vars, "MAP ERROR!!!");
 		vars->map[i] = line;
 		i++;
 	}
 	close(fd);
+	check_map(vars);
 }
 
 void	open_map(char *filename, t_vars *vars)
@@ -116,7 +113,11 @@ void	open_map(char *filename, t_vars *vars)
 	width = 0;
 	height = 0;
 	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		destroy_game(vars, "MAP ERROR!!!");
 	line = get_next_line(fd);
+	if (!line)
+		destroy_game(vars, "MAP ERROR!!!");
 	while (line[width])
 		width++;
 	while (line)
@@ -124,8 +125,8 @@ void	open_map(char *filename, t_vars *vars)
 		line = get_next_line(fd);
 		height++;
 	}
-	vars->height = height;
-	vars->width = width - 1;
-	malloc_map(filename, vars);
+	vars->h = height;
+	vars->w = width - 1;
 	close(fd);
+	malloc_map(filename, vars);
 }
