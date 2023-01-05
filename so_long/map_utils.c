@@ -6,19 +6,11 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/28 18:26:41 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/04 23:20:57 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/05 18:25:47 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
-
-void	set_vars(t_vars *vars)
-{
-	vars->c_chk = 0;
-	vars->p_chk = 0;
-	vars->e_chk = 0;
-	vars->movements = 0;
-}
 
 void	set_image(t_vars *vars)
 {
@@ -35,10 +27,10 @@ void	set_image(t_vars *vars)
 		"./textures/exit.xpm", &img_width, &img_height);
 	vars->mouse = mlx_xpm_file_to_image(vars->mlx, \
 		"./textures/mouse.xpm", &img_width, &img_height);
-	put_img(vars);
+	put_image(vars);
 }
 
-void	put_img(t_vars *vars)
+void	put_image(t_vars *vars)
 {
 	int	i;
 	int	j;
@@ -67,12 +59,12 @@ void	put_img(t_vars *vars)
 	}
 }
 
-void	free_map(char **map)
+void	free_map(t_vars *vars, char **map)
 {
 	int	i;
 
 	i = -1;
-	while (map[++i])
+	while (++i < vars->h && map[i])
 		free(map[i]);
 	free(map);
 }
@@ -90,43 +82,41 @@ void	malloc_map(char *filename, t_vars *vars)
 		destroy_game(vars, "MALLOC ERROR!!!");
 	while (i < vars->h)
 	{
-		vars->map[i] = malloc(sizeof(char) * vars->w + 1);
-		if (!vars->map[i])
-			destroy_game(vars, "MALLOC ERROR!!!");
 		line = get_next_line(fd);
-		if (check_line(line, i, vars) == 0)
-			destroy_game(vars, "MAP ERROR!!!");
 		vars->map[i] = line;
+		if (check_line(line, i, vars) == 0)
+		{
+			vars->h = i;
+			destroy_game(vars, "MAP ERROR!!!");
+		}
 		i++;
 	}
 	close(fd);
 	check_map(vars);
+	vars->m_chk = 1;
 }
 
 void	open_map(char *filename, t_vars *vars)
 {
 	int		fd;
 	char	*line;
-	int		width;
-	int		height;
 
-	width = 0;
-	height = 0;
+	set_vars(vars);
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		destroy_game(vars, "MAP ERROR!!!");
 	line = get_next_line(fd);
 	if (!line)
 		destroy_game(vars, "MAP ERROR!!!");
-	while (line[width])
-		width++;
+	while (line[vars->w + 1])
+		vars->w++;
+	free(line);
 	while (line)
 	{
 		line = get_next_line(fd);
-		height++;
+		free(line);
+		vars->h++;
 	}
-	vars->h = height;
-	vars->w = width - 1;
 	close(fd);
 	malloc_map(filename, vars);
 }

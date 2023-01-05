@@ -1,6 +1,6 @@
 NAME = so_long
 
-CFLAGS = -Wall -Wextra -Werror -g 
+CFLAGS = -Wall -Wextra -Werror
 MLX_FLAGS = -lmlx -framework OpenGL -framework AppKit
 
 SRCS =  so_long.c \

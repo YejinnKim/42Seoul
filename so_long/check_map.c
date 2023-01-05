@@ -6,11 +6,21 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 19:28:36 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/04 23:25:13 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/05 18:22:39 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	set_vars(t_vars *vars)
+{
+	vars->w = 0;
+	vars->h = 0;
+	vars->c_chk = 0;
+	vars->p_chk = 0;
+	vars->e_chk = 0;
+	vars->movements = 0;
+}
 
 int	check_path(t_vars *vars, char **map, int x, int y)
 {
@@ -67,14 +77,14 @@ void	check_map(t_vars *vars)
 {
 	char	**map;
 	int		i;
+	int		chk;
 
-	set_vars(vars);
 	i = 0;
 	map = malloc(sizeof(char *) * vars->h);
 	if (!map)
 		destroy_game(vars, "MALLOC ERROR!!!");
 	i = -1;
-	while (++i < vars->w)
+	while (++i < vars->h)
 	{
 		map[i] = malloc(sizeof(char) * vars->w + 1);
 		if (!map[i])
@@ -83,7 +93,9 @@ void	check_map(t_vars *vars)
 	check_game(vars, map);
 	if (vars->p_chk != 1 || vars->e_chk != 1 || vars->c < 1)
 		destroy_game(vars, "MAP ERROR!!!");
-	if (check_path(vars, map, vars->x, vars->y) == 0)
+	chk = check_path(vars, map, vars->x, vars->y);
+	free_map(vars, map);
+	if (chk == 0)
 		destroy_game(vars, "MAP ERROR!!!");
 }
 
