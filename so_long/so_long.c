@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/22 15:00:58 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/04 23:31:13 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/05 18:26:35 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,15 @@
 
 int	destroy_game(t_vars *vars, char *str)
 {
-	ft_printf("%s\n", str);
-	if (vars->mlx && vars->win)
+	(void)vars;
+	if (ft_strlen(str) >= 18)
+		ft_printf("GAME CLOSE\n");
+	else
+		ft_printf("%s\n", str);
+	if (vars->m_chk == 1)
 		mlx_destroy_window(vars->mlx, vars->win);
+	if (vars->map)
+		free_map(vars, vars->map);
 	exit(0);
 	return (0);
 }
@@ -56,7 +62,7 @@ int	key_hook(int keycode, t_vars *vars)
 	else if (keycode == KEY_D)
 		player_move(vars, 1, 0);
 	else if (keycode == KEY_ESC)
-		destroy_game(vars, "EXIT");
+		destroy_game(vars, "GAME CLOSE");
 	return (0);
 }
 
