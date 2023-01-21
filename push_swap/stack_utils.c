@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 16:48:29 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/16 22:26:53 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/21 22:28:48 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void append_node(t_stack* stack, t_node* new_node)
     else 
 	{
         tmp = stack->top;
-        tmp->next = new_node;
-        new_node->prev = tmp;
+        tmp->prev = new_node;
+        new_node->next = tmp;
         stack->top = new_node;
     }
     stack->size++;
@@ -58,13 +58,13 @@ void remove_node(t_stack *stack)
     t_node* tmp;
 
 	top = stack->top;
-	tmp = stack->top->prev;
+	tmp = stack->top->next;
     if(top == NULL) return;
 	else if (!tmp)
 		stack->top = NULL;
     else
 	{
-		tmp->next = NULL;
+		tmp->prev = NULL;
         stack->top = tmp;
     }
     stack->size--;

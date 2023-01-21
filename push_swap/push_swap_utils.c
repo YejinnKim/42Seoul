@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 16:23:50 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/16 22:48:00 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/21 22:32:56 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	swap_stack(t_stack *stack)
 	if (stack->size < 2)
 		return ;
 	top = stack->top;
-	tmp = stack->top->prev;
-	top->prev = tmp->prev;
-	top->next = tmp;
-	tmp->prev = top;
-	tmp->next = NULL;
-	tmp->prev->next = top;
+	tmp = stack->top->next;
+	top->next = tmp->next;
+	top->prev = tmp;
+	tmp->next = top;
+	tmp->prev = NULL;
+	tmp->next->prev = top;
 	stack->top = tmp;
 }
 
@@ -52,16 +52,16 @@ void	rotate_stack(t_stack *stack)
 		return ;
 	top = stack->top;
 	bottom = stack->bottom;
-	tmp = top->prev;
-	top->prev = NULL;
-	top->next = bottom;
-	bottom->prev = top;
-	tmp->next = NULL;
+	tmp = top->next;
+	top->next = NULL;
+	top->prev = bottom;
+	bottom->next = top;
+	tmp->prev = NULL;
 	stack->top = tmp;
 	stack->bottom = top;
 }
 
-void	revers_rotate_stack(t_stack *stack)
+void	reverse_rotate_stack(t_stack *stack)
 {
 	t_node	*top;
 	t_node	*bottom;
@@ -71,11 +71,11 @@ void	revers_rotate_stack(t_stack *stack)
 		return ;
 	top = stack->top;
 	bottom = stack->bottom;
-	tmp = bottom->next;
-	bottom->prev = top;
-	bottom->next = NULL;
-	top->next = bottom;
-	tmp->prev = NULL;
+	tmp = bottom->prev;
+	bottom->next = top;
+	bottom->prev = NULL;
+	top->prev = bottom;
+	tmp->next = NULL;
 	stack->top = bottom;
 	stack->bottom = tmp;
 }

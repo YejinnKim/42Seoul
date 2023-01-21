@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:23:25 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/16 22:47:04 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/21 20:10:16 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ void	remove_node(t_stack *stack);
 void	swap_stack(t_stack *stack);
 void	push_stack(t_stack *s1, t_stack *s2);
 void	rotate_stack(t_stack *stack);
-void	revers_rotate_stack(t_stack *stack);
+void	reverse_rotate_stack(t_stack *stack);
 
 #endif
