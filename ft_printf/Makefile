@@ -1,6 +1,6 @@
 NAME = libftprintf.a
 
-CC = gcc
+CC = cc
 RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror
 
@@ -11,7 +11,7 @@ OBJ_FILES = $(OBJS)
 
 all : $(NAME)
 %.o : %.c
-	$(CC) $(CFLAG) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 $(NAME) : $(OBJ_FILES)
 	ar crs $(NAME) $(OBJ_FILES)
 clean : 
