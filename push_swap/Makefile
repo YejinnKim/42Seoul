@@ -6,7 +6,7 @@
 #    By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/09 21:23:22 by yejinkim          #+#    #+#              #
-#    Updated: 2023/01/16 22:18:43 by yejinkim         ###   ########seoul.kr   #
+#    Updated: 2023/01/26 20:53:54 by yejinkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS =  push_swap.c \
 		stack_utils.c \
-		push_swap_utils.c
+		push_swap_utils.c \
+		sort_stack.c \
+		check_arg.c
 
 OBJS = $(SRCS:.c=.o)
 

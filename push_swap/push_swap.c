@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:01:41 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/21 22:34:08 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/26 23:30:16 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,63 @@ void print(t_stack *a_stack, t_stack *b_stack)
 	}
 }
 
+int	check_overflow(long result, long sign)
+{
+	if (result * sign < (long)-2147483648)
+		return (0);
+	else if (result * sign > (long)2147483647)
+		return (-1);
+	return (1);
+}
+
+int	ft_atoi(const char *str)
+{
+	long	i;
+	long	sign;
+	long	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + (str[i] - '0');
+		i++;
+	}
+	return ((int)result * (int)sign);
+}
+
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
 	t_stack	*b;
     t_node	*node;
-	
+	int		i;
+
 	a = init_stack();
 	b = init_stack();
 	node = NULL;
-	for(int i=argc-1; i>0; i--)
+	i = argc - 1;
+	
+	while (i > 0)
 	{
 		node = create_node(atoi(argv[i]));
 		append_node(a, node);
+		i--;
 	}
-
-	print(a, b);
-	push_stack(a, b);
-	reverse_rotate_stack(a);
-	reverse_rotate_stack(a);
-
-	print(a, b);
+	
+	index_arr(a);
+	// print(a, b);
+	a_to_b(a, b);
+	b_to_a(a, b);
 
 	return (0);
 }
