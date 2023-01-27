@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:30:02 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/26 23:30:12 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/27 20:22:00 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	index_arr(t_stack *stack)
 		i++;
 	}
 	quick_sort(arr, 0, stack->size - 1);
+	check_sort(stack, arr);
 	i = 0;
 	node = stack->top;
 	while (i < stack->size)
@@ -82,5 +83,49 @@ void	index_arr(t_stack *stack)
 		}
 		node = node->next;
 		i++;
+	}
+	free(arr);
+}
+
+void	check_sort(t_stack *stack, int *arr)
+{
+	t_node	*node;
+	int	i;
+	int chk;
+
+	i = 0;
+	chk = 0;
+	node = stack->top;
+	while (i < stack->size)
+	{
+		if (arr[i] == node->value)
+			chk++;
+		i++;
+		node = node->next;
+	}
+	if (chk == stack->size)
+		exit(0);
+}
+
+void	check_duplicate(t_stack *stack)
+{
+	t_node	*node;
+	t_node	*tmp;
+	int	chk;
+
+	node = stack->top;
+	while (node)
+	{
+		chk = 0;
+		tmp = stack->top;
+		while (tmp)
+		{
+			if (node->value == tmp->value)
+				chk++;
+			tmp = tmp->next;
+		}
+		if (chk > 1)
+			print_error();
+		node = node->next;
 	}
 }

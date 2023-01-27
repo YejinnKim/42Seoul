@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:01:41 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/26 23:30:16 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/27 23:38:38 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ void print(t_stack *a_stack, t_stack *b_stack)
 	}
 }
 
+void	print_error(void)
+{
+	printf("Error\n");
+	exit(0);
+}
+
 int	check_overflow(long result, long sign)
 {
 	if (result * sign < (long)-2147483648)
@@ -84,8 +90,45 @@ int	ft_atoi(const char *str)
 	{
 		result = result * 10 + (str[i] - '0');
 		i++;
+		if (check_overflow(result, sign) < 1)
+			print_error();
 	}
 	return ((int)result * (int)sign);
+}
+
+void	check_num(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!((str[i] >= '0' && str[i] <= '9') || \
+			(str[i] == '+' || str[i] == '-') || \
+			((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')))
+			print_error();
+		i++;
+	}
+}
+
+int	*parse_arg(char *argv, int cnt)
+{
+	int	*result;
+	char **tmp;
+	int i;
+
+	i = 0;
+	check_num(argv);
+	tmp = ft_split(argv);
+	result = malloc(sizeof(int *) * cnt);
+	cnt--;
+	while (cnt >= 0)
+	{
+		result[cnt] = ft_atoi(tmp[i]);
+		i++;
+		cnt--;
+	}
+	return (result);
 }
 
 int	main(int argc, char **argv)
@@ -94,23 +137,30 @@ int	main(int argc, char **argv)
 	t_stack	*b;
     t_node	*node;
 	int		i;
+	int		j;
+	int		*tmp;
+	int		cnt;
 
 	a = init_stack();
 	b = init_stack();
 	node = NULL;
 	i = argc - 1;
-	
 	while (i > 0)
 	{
-		node = create_node(atoi(argv[i]));
-		append_node(a, node);
+		cnt = count_word(argv[i], ' ');
+		tmp = parse_arg(argv[i], cnt);
+		j = 0;
+		while (j < cnt)
+		{
+			node = create_node(tmp[j]);
+			append_node(a, node);
+			j++;
+		}
 		i--;
 	}
-	
-	index_arr(a);
-	// print(a, b);
-	a_to_b(a, b);
-	b_to_a(a, b);
+	sort_stack(a, b);
+
+	//print(a, b);
 
 	return (0);
 }

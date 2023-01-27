@@ -6,13 +6,13 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 16:23:50 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/21 22:32:56 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/27 20:51:03 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	swap_stack(t_stack *stack)
+void	swap_stack(t_stack *stack, char *str)
 {
 	t_node	*top;
 	t_node	*tmp;
@@ -27,9 +27,10 @@ void	swap_stack(t_stack *stack)
 	tmp->prev = NULL;
 	tmp->next->prev = top;
 	stack->top = tmp;
+	write(1, str, 3);
 }
 
-void	push_stack(t_stack *s1, t_stack *s2)
+void	push_stack(t_stack *s1, t_stack *s2, char *str)
 {
 	int		tmp;
 	t_node	*node;
@@ -40,9 +41,10 @@ void	push_stack(t_stack *s1, t_stack *s2)
 	node = create_node(tmp);
 	append_node(s2, node);
 	remove_node(s1);
+	write(1, str, 3);
 }
 
-void	rotate_stack(t_stack *stack)
+void	rotate_stack(t_stack *stack, char *str)
 {
 	t_node	*top;
 	t_node	*bottom;
@@ -59,9 +61,10 @@ void	rotate_stack(t_stack *stack)
 	tmp->prev = NULL;
 	stack->top = tmp;
 	stack->bottom = top;
+	write(1, str, 3);
 }
 
-void	reverse_rotate_stack(t_stack *stack)
+void	reverse_rotate_stack(t_stack *stack, char *str)
 {
 	t_node	*top;
 	t_node	*bottom;
@@ -78,4 +81,5 @@ void	reverse_rotate_stack(t_stack *stack)
 	tmp->next = NULL;
 	stack->top = bottom;
 	stack->bottom = tmp;
+	write(1, str, 4);
 }
