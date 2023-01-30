@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/11 20:56:43 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/27 19:57:02 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/30 21:27:05 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (len);
 }
 
-int	count_word(const char *str, char c)
+int	count_word(const char *str)
 {
 	int	i;
 	int	cnt;
@@ -41,14 +41,14 @@ int	count_word(const char *str, char c)
 	cnt = 0;
 	while (str[i])
 	{
-		if (str[i] != c && (str[i + 1] == c || str[i + 1] == '\0'))
+		if (str[i] != ' ' && (str[i + 1] == ' ' || str[i + 1] == '\0'))
 			cnt++;
 		i++;
 	}
 	return (cnt);
 }
 
-static int	check_arr(char **arr, int idx)
+int	check_arr(char **arr, int idx)
 {
 	int	i;
 
@@ -67,7 +67,7 @@ static int	check_arr(char **arr, int idx)
 		return (0);
 }
 
-static void	malloc_word(char **arr, char const *str, char c)
+void	malloc_word(char **arr, char const *str)
 {
 	int	idx;
 	int	i;
@@ -77,12 +77,12 @@ static void	malloc_word(char **arr, char const *str, char c)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == c)
+		if (str[i] == ' ')
 			i++;
 		else
 		{
 			j = 1;
-			while (str[i + j] != c && str[i + j])
+			while (str[i + j] != ' ' && str[i + j])
 				j++;
 			arr[idx] = (char *)malloc(sizeof(char) * (j + 1));
 			if (check_arr(arr, idx))
@@ -98,14 +98,12 @@ static void	malloc_word(char **arr, char const *str, char c)
 char	**ft_split(char *s)
 {
 	char	**arr;
-	char	c;
 
 	if (!s)
 		return (0);
-	c = ' ';
-	arr = (char **)malloc(sizeof(char *) * (count_word(s, c) + 1));
+	arr = (char **)malloc(sizeof(char *) * (count_word(s) + 1));
 	if (!arr)
-		return (0);
-	malloc_word(arr, s, c);
+		exit(0);
+	malloc_word(arr, s);
 	return (arr);
 }

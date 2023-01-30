@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 16:23:50 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/01/27 20:51:03 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/01/30 20:20:03 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	push_stack(t_stack *s1, t_stack *s2, char *str)
 		return ;
 	tmp = s1->top->value;
 	node = create_node(tmp);
+	if (!node)
+		free_stack(s1, s2);
 	append_node(s2, node);
 	remove_node(s1);
 	write(1, str, 3);
