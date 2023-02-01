@@ -12,7 +12,7 @@
 
 #include "push_swap.h"
 
-t_stack	*init_stack(void)
+t_stack	*init_stack(char name)
 {
 	t_stack	*stack;
 
@@ -22,6 +22,7 @@ t_stack	*init_stack(void)
 	stack->top = NULL;
 	stack->bottom = NULL;
 	stack->size = 0;
+	stack->name = name;
 	return (stack);
 }
 

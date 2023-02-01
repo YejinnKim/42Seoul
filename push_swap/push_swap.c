@@ -70,7 +70,7 @@ int	*copy_stack(t_stack *stack)
 	i = 0;
 	arr = malloc(sizeof(int) * stack->size);
 	if (!arr)
-		free_stack(stack, NULL);
+		exit(1);
 	node = stack->top;
 	while (node)
 	{
@@ -87,10 +87,10 @@ int	main(int argc, char **argv)
 	t_stack	*b;
 	int		*arr;
 
-	a = init_stack();
-	b = init_stack();
+	a = init_stack('a');
+	b = init_stack('b');
 	if (!a || !b)
-		exit(0);
+		exit(1);
 	parse_arg(a, argc - 1, argv);
 	arr = copy_stack(a);
 	quick_sort(arr, 0, a->size - 1);

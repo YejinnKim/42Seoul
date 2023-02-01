@@ -28,9 +28,10 @@ typedef struct s_stack
 	t_node	*top;
 	t_node	*bottom;
 	int		size;
+	char	name;
 }	t_stack;
 
-t_stack	*init_stack(void);
+t_stack	*init_stack(char name);
 t_node	*create_node(int value);
 void	append_node(t_stack *stack, t_node *new_node);
 void	remove_node(t_stack *stack);
@@ -48,6 +49,10 @@ void	quick_sort(int *arr, int start, int end);
 void	swap_arr(int *arr, int i, int j);
 int		ft_atoi(const char *str);
 char	**ft_split(char *s);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlen(const char *s);
+int		ft_strcmp(const char *s1, const char *s2);
+size_t	ft_strcpy(char *dst, const char *src);
 int		count_word(const char *str);
 void	check_duplicate(t_stack *stack);
 void	check_sort(t_stack *stack, int *arr);
@@ -56,10 +61,13 @@ int		check_overflow(long result, long sign);
 void	sort_stack(t_stack *a, t_stack *b);
 void	push_b(t_stack *a, t_stack *b, int chunk);
 void	push_a(t_stack *a, t_stack *b);
-void	max_top(t_stack *b);
-void	top_push(t_stack *b, t_node *node, int max, int i);
+void	target_top(t_stack *stack, int target, int max);
+void	move_top(t_stack *stack, int i);
 void	push_a_min(t_stack *a, t_stack *b);
 void	push_b_min(t_stack *a, t_stack *b, int size);
 void	sort_three(t_stack *a, int size);
+int		count_index(t_stack *a);
+void	print_cmd(char *str);
+void	cmd_check(char *prev, char *str);
 
 #endif

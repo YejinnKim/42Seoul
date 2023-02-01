@@ -84,7 +84,7 @@ int	*split_arg(char *argv, int cnt)
 	tmp = ft_split(argv);
 	result = malloc(sizeof(int *) * cnt);
 	if (!result)
-		exit(0);
+		exit(1);
 	cnt--;
 	while (cnt >= 0)
 	{

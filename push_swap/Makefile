@@ -12,7 +12,7 @@
 
 NAME = push_swap
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 SRCS =  push_swap.c \
 		stack_utils.c \
@@ -21,7 +21,8 @@ SRCS =  push_swap.c \
 		sort_min.c \
 		check_arg.c \
 		parse_arg.c \
-		ft_split.c
+		ft_split.c \
+		ft_str.c
 
 OBJS = $(SRCS:.c=.o)
 

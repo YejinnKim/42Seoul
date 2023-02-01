@@ -78,3 +78,27 @@ void	check_duplicate(t_stack *stack)
 		node = node->next;
 	}
 }
+
+void	cmd_check(char *prev, char *str)
+{
+	if (!ft_strcmp(prev, "rb\n") && !ft_strcmp(str, "ra\n"))
+	{
+		write(1, "rr\n", 3);
+		prev[0] = '\0';
+	}
+	else if (!ft_strcmp(prev, "sa\n") && !ft_strcmp(str, "sb\n"))
+	{
+		write(1, "ss\n", 3);
+		prev[0] = '\0';
+	}
+	else if (!ft_strcmp(prev, "ra\n") && !ft_strcmp(str, "sb\n"))
+	{
+		write(1, "rr\n", 3);
+		prev[0] = '\0';
+	}
+	else
+	{
+		write(1, prev, ft_strlen(prev));
+		ft_strcpy(prev, str);
+	}
+}

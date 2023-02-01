@@ -37,6 +37,23 @@ void	sort_three(t_stack *a, int size)
 	}
 }
 
+int	count_index(t_stack *a)
+{
+	int		i;
+	t_node *tmp;
+
+	i = 0;
+	tmp = a->top;
+	while (tmp)
+	{
+		if (tmp->value == 0 || tmp->value == 1)
+			break ;
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
 void	push_b_min(t_stack *a, t_stack *b, int size)
 {
 	while (a->size > 3)
@@ -46,7 +63,12 @@ void	push_b_min(t_stack *a, t_stack *b, int size)
 		else if (a->top->value == 1 && size == 5)
 			push_stack(a, b, "pb\n");
 		else
-			rotate_stack(a, "ra\n");
+		{
+			if (count_index(a) > size / 2)
+				reverse_rotate_stack(a, "rra\n");
+			else
+				rotate_stack(a, "ra\n");
+		}
 	}
 }
 

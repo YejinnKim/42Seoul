@@ -11,45 +11,45 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
-void	top_push(t_stack *b, t_node *node, int max, int i)
+void	move_top(t_stack *stack, int i)
 {
-	if (node->value == max)
+	if (stack->size / 2 < i)
 	{
-		if ((int)(b->size / 2) < i)
+		while (++i <= stack->size)
 		{
-			while (i < b->size)
-			{
-				reverse_rotate_stack(b, "rrb\n");
-				i++;
-			}
-			return ;
+			if (stack->name == 'a')
+				reverse_rotate_stack(stack, "rra\n");				
+			else if (stack->name == 'b')
+				reverse_rotate_stack(stack, "rrb\n");				
 		}
-		else
+	}
+	else
+	{
+		while (--i >= 0)
 		{
-			while (i > 0)
-			{
-				rotate_stack(b, "rb\n");
-				i--;
-			}
-			return ;
+			if (stack->name == 'a')
+				rotate_stack(stack, "ra\n");
+			else if (stack->name == 'b')
+				rotate_stack(stack, "rb\n");
 		}
 	}
 }
 
-void	max_top(t_stack *b)
+void	target_top(t_stack *stack, int target, int max)
 {
 	int		i;
-	int		max;
 	t_node	*node;
 
 	i = 0;
-	max = b->size - 1;
-	node = b->top;
+	node = stack->top;
 	while (node != NULL)
 	{
-		top_push(b, node, max, i);
+		if ((max && (node->value == target)) || (!max && (node->value <= target)))
+		{
+			move_top(stack, i);
+			return ;
+		}
 		node = node->next;
 		i++;
 	}
@@ -59,7 +59,7 @@ void	push_a(t_stack *a, t_stack *b)
 {
 	while (b->size != 0)
 	{
-		max_top(b);
+		target_top(b, b->size - 1, 1);
 		push_stack(b, a, "pa\n");
 	}
 }
@@ -83,12 +83,7 @@ void	push_b(t_stack *a, t_stack *b, int chunk)
 			i++;
 		}
 		else if (a->top->value > i + chunk)
-		{
-			if (a->size / 2 < i)
-				rotate_stack(a, "ra\n");
-			else
-				reverse_rotate_stack(a, "rra\n");
-		}
+			target_top(a, i+chunk, 0);
 	}
 }
 
@@ -115,5 +110,6 @@ void	sort_stack(t_stack *a, t_stack *b)
 		push_b(a, b, chunk);
 		push_a(a, b);
 	}
+	print_cmd("end");
 	free_stack(a, b);
 }

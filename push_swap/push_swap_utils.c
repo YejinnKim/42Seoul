@@ -27,7 +27,7 @@ void	swap_stack(t_stack *stack, char *str)
 	tmp->prev = NULL;
 	tmp->next->prev = top;
 	stack->top = tmp;
-	write(1, str, 3);
+	print_cmd(str);
 }
 
 void	push_stack(t_stack *s1, t_stack *s2, char *str)
@@ -43,7 +43,7 @@ void	push_stack(t_stack *s1, t_stack *s2, char *str)
 		free_stack(s1, s2);
 	append_node(s2, node);
 	remove_node(s1);
-	write(1, str, 3);
+	print_cmd(str);
 }
 
 void	rotate_stack(t_stack *stack, char *str)
@@ -63,7 +63,7 @@ void	rotate_stack(t_stack *stack, char *str)
 	tmp->prev = NULL;
 	stack->top = tmp;
 	stack->bottom = top;
-	write(1, str, 3);
+	print_cmd(str);
 }
 
 void	reverse_rotate_stack(t_stack *stack, char *str)
@@ -83,5 +83,22 @@ void	reverse_rotate_stack(t_stack *stack, char *str)
 	tmp->next = NULL;
 	stack->top = bottom;
 	stack->bottom = tmp;
-	write(1, str, 4);
+	print_cmd(str);
+}
+
+void	print_cmd(char *str)
+{
+	static char	*prev;
+
+	if (!prev)
+	{
+		prev = malloc(sizeof(char) * 5);
+		prev[0] = '\0';
+	}
+	if (!prev[0])
+		ft_strcpy(prev, str);
+	else
+		cmd_check(prev, str);
+	if (!ft_strcmp(prev, "end"))
+		free(prev);
 }
