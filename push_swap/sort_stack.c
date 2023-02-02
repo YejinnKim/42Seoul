@@ -19,9 +19,9 @@ void	move_top(t_stack *stack, int i)
 		while (++i <= stack->size)
 		{
 			if (stack->name == 'a')
-				reverse_rotate_stack(stack, "rra\n");				
+				reverse_rotate_stack(stack, "rra\n");
 			else if (stack->name == 'b')
-				reverse_rotate_stack(stack, "rrb\n");				
+				reverse_rotate_stack(stack, "rrb\n");
 		}
 	}
 	else
@@ -45,7 +45,8 @@ void	target_top(t_stack *stack, int target, int max)
 	node = stack->top;
 	while (node != NULL)
 	{
-		if ((max && (node->value == target)) || (!max && (node->value <= target)))
+		if ((max && (node->value == target)) \
+			|| (!max && (node->value <= target)))
 		{
 			move_top(stack, i);
 			return ;
@@ -83,7 +84,7 @@ void	push_b(t_stack *a, t_stack *b, int chunk)
 			i++;
 		}
 		else if (a->top->value > i + chunk)
-			target_top(a, i+chunk, 0);
+			target_top(a, i + chunk, 0);
 	}
 }
 

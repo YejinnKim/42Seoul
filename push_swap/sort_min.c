@@ -40,7 +40,7 @@ void	sort_three(t_stack *a, int size)
 int	count_index(t_stack *a)
 {
 	int		i;
-	t_node *tmp;
+	t_node	*tmp;
 
 	i = 0;
 	tmp = a->top;
