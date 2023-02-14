@@ -15,7 +15,8 @@ NAME = pipex
 CFLAGS = -Wall -Wextra -Werror -g
 # export MallocStackLogging=1
 
-SRCS =  pipex.c
+SRCS =  pipex.c \
+		parse_args.c
 
 OBJS = $(SRCS:.c=.o)
 

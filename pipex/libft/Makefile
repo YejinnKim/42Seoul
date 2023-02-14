@@ -1,7 +1,5 @@
 NAME = libft.a
 
-CC = cc
-RM = rm -rf
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = ft_strlen.c	\
@@ -39,35 +37,17 @@ SRCS = ft_strlen.c	\
 		ft_putstr_fd.c	\
 		ft_putendl_fd.c	\
 		ft_putnbr_fd.c
-SRCS_BONUS = ft_lstnew.c	\
- 		ft_lstsize.c	\
- 		ft_lstadd_front.c	\
- 		ft_lstadd_back.c	\
- 		ft_lstclear.c	\
- 		ft_lstlast.c	\
- 		ft_lstiter.c	\
- 		ft_lstmap.c	\
- 		ft_lstdelone.c
 
 OBJS = $(SRCS:.c=.o)
-OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
-ifdef WITH_BONUS
-    OBJ_FILES = $(OBJS) $(OBJS_BONUS)
-else
-	OBJ_FILES = $(OBJS)
-endif
-
-all : $(NAME)
-%.o : %.c
-	$(CC) $(CFLAG) -c $< -o $@
-$(NAME) : $(OBJ_FILES)
-	ar crs $(NAME) $(OBJ_FILES)
-bonus : 
-	make WITH_BONUS=1 all
-clean : 
-	$(RM) $(OBJS) $(OBJS_BONUS)
-fclean : clean
-	$(RM) $(NAME)
-re : fclean $(NAME)
-.PHONY : bonus all clean fclean re
+all		:	$(NAME)
+%.o 	:	%.c
+			$(CC) $(CFLAG) -c $< -o $@
+$(NAME)	:	$(OBJS)
+			ar crs $(NAME) $(OBJS)
+clean	: 
+			$(RM) $(OBJS)
+fclean	:	clean
+			$(RM) $(NAME)
+re		:	fclean $(NAME)
+.PHONY	:	bonus all clean fclean re
