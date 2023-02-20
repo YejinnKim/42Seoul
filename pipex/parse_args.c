@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:00:38 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/14 20:55:51 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/20 19:28:53 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,14 @@ char	*find_path(t_args *args, char **cmd)
 	i = 0;
 	while (args->path[i])
 	{
-		tmp = ft_strjoin(args->path[i], "/");
-		path = ft_strjoin(tmp, cmd[0]);
-		free(tmp);
+		if (cmd[0][0] == '/')
+			path = cmd[0];
+		else
+		{
+			tmp = ft_strjoin(args->path[i], "/");
+			path = ft_strjoin(tmp, cmd[0]);
+			free(tmp);
+		}
 		if (access(path, X_OK) == 0)
 			return (path);
 		free(path);
@@ -50,12 +55,15 @@ char	*find_path(t_args *args, char **cmd)
 
 void	check_args(t_args *args)
 {
-	if (args->infile < 0 || args->outfile < 0)
-		print_error("File Error\n");
-	if (!args->cmd1 || !args->cmd2)
-		print_error("Command Error\n");
-	if (!args->cmd1_path || !args->cmd2_path)
-		print_error("Command Error\n");
+	if (args->infile < 0)
+		perror("infile error");
+	if (args->outfile < 0)
+		print_error("outfile error\n");
+	// if (!args->cmd1_path || !args->cmd2_path)
+	// {
+	// 	perror("command not found");
+	// 	exit(127);
+	// }
 }
 
 void	parse_args(t_args *args, char **argv, char **envp)
