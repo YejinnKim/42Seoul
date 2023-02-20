@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 18:00:53 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/20 19:07:21 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/20 19:32:18 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ typedef struct s_args
 }	t_args;
 
 void	parse_args(t_args *args, char **argv, char **envp);
-void	print_error(char *str);
+void	print_error(char *str, int errno);
 
 #endif

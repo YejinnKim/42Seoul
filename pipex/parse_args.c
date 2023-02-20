@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:00:38 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/20 19:28:53 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/20 19:43:08 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,7 @@ void	check_args(t_args *args)
 	if (args->infile < 0)
 		perror("infile error");
 	if (args->outfile < 0)
-		print_error("outfile error\n");
-	// if (!args->cmd1_path || !args->cmd2_path)
-	// {
-	// 	perror("command not found");
-	// 	exit(127);
-	// }
+		print_error("outfile error", 1);
 }
 
 void	parse_args(t_args *args, char **argv, char **envp)
