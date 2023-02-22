@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/13 18:00:53 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/22 15:34:32 by yejinkim         ###   ########seoul.kr  */
+/*   Created: 2023/02/21 21:24:14 by yejinkim          #+#    #+#             */
+/*   Updated: 2023/02/22 22:16:26 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 typedef struct s_args
 {
 	int		infile;
 	int		outfile;
-	char	**cmd1;
-	char	**cmd2;
-	char	*cmd1_path;
-	char	*cmd2_path;
+	char	**cmd;
+	char	*cmd_path;
 	char	**path;
 	char	**envp;
+	int		argc;
 }	t_args;
 
 void	pipex(t_args *args);
-void	connet_pipe(int in, int out);
+void	pipex_mult(t_args *args, char **argv);
+void	free_cmd(char **cmd, char *cmd_path);
 void	print_error(char *str, int errno);
-void	parse_args(t_args *args, char **argv, char **envp);
-void	check_args(t_args *args);
+void	parse_args(t_args *args, int argc, char **argv, char **envp);
+void	check_files(t_args *args);
 char	*find_path(t_args *args, char **cmd);
 char	**pars_envp(char **envp);
 

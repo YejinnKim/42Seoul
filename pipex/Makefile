@@ -10,31 +10,46 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex
+NAME	=	pipex
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS	=	-Wall -Wextra -Werror -g
 # export MallocStackLogging=1
+# while true; do a.out; sleep 0.4; done
 
-SRCS =  pipex.c \
-		parse_args.c
+SRCS	=	pipex.c \
+			parse_args.c
 
-OBJS = $(SRCS:.c=.o)
+SRCS_BNS	=	bonus/pipex_bonus.c \
+				bonus/parse_args_bonus.c
 
-LIBFT = make -C libft
+OBJS 	=	$(SRCS:.c=.o)
+
+OBJS_BNS	=	$(SRCS_BNS:.c=.o)
+
+MKLIB		=	make -C libft
+
+LIBFT 		=	libft/libft.a
+
+ifdef BNS_FLAG
+    OBJS = $(OBJS_BNS)
+endif
 
 all 	:	$(NAME)
 
 $(NAME) :	$(OBJS)
-			$(LIBFT)
-			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) libft/libft.a
-			
+			$(MKLIB)
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT)
+
 clean   :	
-			$(RM) $(OBJS)
-			$(LIBFT) clean
+			$(RM) $(OBJS) $(OBJS_BNS)
+			$(MKLIB) clean
 
 fclean  :	clean
-			$(RM) $(NAME) libft/libft.a
+			$(RM) $(NAME) $(LIBFT)
 
 re		:	fclean all
 
-.PHONY  :	all clean fclean re
+bonus	:	
+			make BNS_FLAG=1
+
+.PHONY  :	all clean fclean re bonus
