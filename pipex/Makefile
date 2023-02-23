@@ -14,7 +14,8 @@ NAME	=	pipex
 
 CFLAGS	=	-Wall -Wextra -Werror -g
 # export MallocStackLogging=1
-# while true; do a.out; sleep 0.4; done
+# unset MallocStackLogging
+# while true; do leaks a.out; sleep 0.4; done
 
 SRCS	=	pipex.c \
 			parse_args.c

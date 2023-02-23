@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:24:14 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/22 22:16:26 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/23 21:32:23 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef struct s_args
 	char	**path;
 	char	**envp;
 	int		argc;
+	int		heredoc;
+	char	*limiter;
 }	t_args;
 
 void	pipex(t_args *args);

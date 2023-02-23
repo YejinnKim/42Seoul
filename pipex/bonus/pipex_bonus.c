@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:22:32 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/22 22:15:33 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/23 21:36:59 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	pipex_mult(t_args *args, char **argv)
 	int	i;
 
 	i = 0;
+	if (args->heredoc)
+		i++;
 	dup2(args->infile, STDIN_FILENO);
 	while (i < args->argc - 3)
 	{
@@ -81,6 +83,11 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc < 5)
 		print_error("argc error", 1);
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	{
+		args.heredoc = 1;
+		args.limiter = ft_strdup(argv[2]);
+	}
 	parse_args(&args, argc, argv, envp);
 	pipex_mult(&args, argv);
 	return (0);
