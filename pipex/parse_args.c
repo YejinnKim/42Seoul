@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:00:38 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/20 19:43:08 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/27 22:47:28 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*find_path(t_args *args, char **cmd)
 	return (NULL);
 }
 
-void	check_args(t_args *args)
+void	check_files(t_args *args)
 {
 	if (args->infile < 0)
 		perror("infile error");
@@ -71,5 +71,5 @@ void	parse_args(t_args *args, char **argv, char **envp)
 	args->cmd2 = ft_split(argv[3], ' ');
 	args->cmd1_path = find_path(args, args->cmd1);
 	args->cmd2_path = find_path(args, args->cmd2);
-	check_args(args);
+	check_files(args);
 }

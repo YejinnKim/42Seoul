@@ -12,16 +12,15 @@
 
 NAME	=	pipex
 
-CFLAGS	=	-Wall -Wextra -Werror -g
-# export MallocStackLogging=1
-# unset MallocStackLogging
-# while true; do leaks a.out; sleep 0.4; done
+CFLAGS	=	-Wall -Wextra -Werror
 
 SRCS	=	pipex.c \
 			parse_args.c
 
 SRCS_BNS	=	bonus/pipex_bonus.c \
-				bonus/parse_args_bonus.c
+				bonus/parse_args_bonus.c \
+				bonus/get_next_line/get_next_line.c \
+				bonus/get_next_line/get_next_line_utils.c
 
 OBJS 	=	$(SRCS:.c=.o)
 

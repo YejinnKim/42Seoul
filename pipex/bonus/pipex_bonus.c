@@ -6,17 +6,11 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:22:32 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/23 21:36:59 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/27 22:49:45 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-
-void	print_error(char *str, int errno)
-{
-	perror(str);
-	exit(errno);
-}
 
 void	free_cmd(char **cmd, char *cmd_path)
 {
@@ -29,11 +23,16 @@ void	free_cmd(char **cmd, char *cmd_path)
 	free(cmd_path);
 }
 
+void	dup2_close(int fd1, int fd2)
+{
+	dup2(fd1, fd2);
+	close(fd1);
+}
+
 void	pipex(t_args *args)
 {
 	int		fds[2];
 	pid_t	pid;
-	int		status;
 
 	pipe(fds);
 	pid = fork();
@@ -42,15 +41,14 @@ void	pipex(t_args *args)
 	else if (pid == 0)
 	{
 		close(fds[0]);
-		dup2(fds[1], STDOUT_FILENO);
+		dup2_close(fds[1], STDOUT_FILENO);
 		if (execve(args->cmd_path, args->cmd, args->envp) == -1)
 			print_error("command not found", 127);
 	}
 	else
 	{
 		close(fds[1]);
-		dup2(fds[0], STDIN_FILENO);
-		waitpid(pid, &status, WNOHANG);
+		dup2_close(fds[0], STDIN_FILENO);
 	}
 }
 
@@ -61,7 +59,7 @@ void	pipex_mult(t_args *args, char **argv)
 	i = 0;
 	if (args->heredoc)
 		i++;
-	dup2(args->infile, STDIN_FILENO);
+	dup2_close(args->infile, STDIN_FILENO);
 	while (i < args->argc - 3)
 	{
 		args->cmd = ft_split(argv[i + 2], ' ');
@@ -72,7 +70,9 @@ void	pipex_mult(t_args *args, char **argv)
 		free_cmd(args->cmd, args->cmd_path);
 		i++;
 	}
-	dup2(args->outfile, STDOUT_FILENO);
+	if (args->heredoc)
+		unlink(".heredoc");
+	dup2_close(args->outfile, STDOUT_FILENO);
 	if (execve(args->cmd_path, args->cmd, args->envp) == -1)
 		print_error("command not found", 127);
 }
@@ -83,11 +83,8 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc < 5)
 		print_error("argc error", 1);
-	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
-	{
+	if (ft_strncmp("here_doc", argv[1], ft_strlen(argv[1])) == 0)
 		args.heredoc = 1;
-		args.limiter = ft_strdup(argv[2]);
-	}
 	parse_args(&args, argc, argv, envp);
 	pipex_mult(&args, argv);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:55:51 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/20 19:32:39 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/02/27 22:40:16 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,18 @@ void	print_error(char *str, int errno)
 	exit(errno);
 }
 
-void	connet_pipe(int in, int out)
+void	dup2_close(int fd1, int fd2)
 {
-	dup2(in, STDIN_FILENO);
-	dup2(out, STDOUT_FILENO);
-	close(in);
-	close(out);
+	dup2(fd1, fd2);
+	close(fd1);
 }
 
 void	pipex(t_args *args)
 {
 	int		fds[2];
 	pid_t	pid;
-	int		status;
 
+	dup2_close(args->infile, STDIN_FILENO);
 	pipe(fds);
 	pid = fork();
 	if (pid == -1)
@@ -39,18 +37,18 @@ void	pipex(t_args *args)
 	else if (pid == 0)
 	{
 		close(fds[0]);
-		connet_pipe(args->infile, fds[1]);
+		dup2_close(fds[1], STDOUT_FILENO);
 		if (execve(args->cmd1_path, args->cmd1, args->envp) == -1)
 			print_error("command not found", 127);
 	}
 	else
 	{
 		close(fds[1]);
-		connet_pipe(fds[0], args->outfile);
-		waitpid(pid, &status, WNOHANG);
-		if (execve(args->cmd2_path, args->cmd2, args->envp) == -1)
-			print_error("command not found", 127);
+		dup2_close(fds[0], STDIN_FILENO);
 	}
+	dup2_close(args->outfile, STDOUT_FILENO);
+	if (execve(args->cmd2_path, args->cmd2, args->envp) == -1)
+		print_error("command not found", 127);
 }
 
 int	main(int argc, char **argv, char **envp)
