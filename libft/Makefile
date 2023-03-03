@@ -60,7 +60,7 @@ OBJS_BONUS = $(SRCS_BONUS:.c=.o)
 
 all : $(NAME)
 %.o : %.c
-	$(CC) $(CFLAG) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 $(NAME) : $(OBJ_FILES)
 	ar crs $(NAME) $(OBJ_FILES)
 bonus : 

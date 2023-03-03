@@ -42,7 +42,7 @@ OBJS = $(SRCS:.c=.o)
 
 all		:	$(NAME)
 %.o 	:	%.c
-			$(CC) $(CFLAG) -c $< -o $@
+			$(CC) $(CFLAGS) -c $< -o $@
 $(NAME)	:	$(OBJS)
 			ar crs $(NAME) $(OBJS)
 clean	: 
