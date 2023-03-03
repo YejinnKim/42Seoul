@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:55:51 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/27 22:40:16 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 18:32:37 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	pipex(t_args *args)
 	dup2_close(args->outfile, STDOUT_FILENO);
 	if (execve(args->cmd2_path, args->cmd2, args->envp) == -1)
 		print_error("command not found", 127);
+	if (args->infile < 0)
+		exit(1);
 }
 
 int	main(int argc, char **argv, char **envp)

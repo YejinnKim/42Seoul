@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:27:10 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/27 22:44:26 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 17:22:19 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	**pars_envp(char **envp)
 			break ;
 		i++;
 	}
+	if (!envp[i])
+		print_error("path error", 1);
 	path = ft_split(envp[i] + 5, ':');
 	return (path);
 }
@@ -66,6 +68,7 @@ void	read_heredoc(t_args *args, char *limiter)
 	args->infile = open(".heredoc", O_WRONLY | O_CREAT | O_APPEND, 0644);
 	while (1)
 	{
+		write(1, "heredoc> ", 9);
 		line = get_next_line(0);
 		if (!line)
 			print_error("gnl error", 1);

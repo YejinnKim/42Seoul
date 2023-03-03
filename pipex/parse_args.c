@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 16:00:38 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/27 22:47:28 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 17:21:44 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	**pars_envp(char **envp)
 			break ;
 		i++;
 	}
+	if (!envp[i])
+		print_error("path error", 1);
 	path = ft_split(envp[i] + 5, ':');
 	return (path);
 }

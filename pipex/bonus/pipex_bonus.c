@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 21:22:32 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/02/27 22:49:45 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/03 17:52:00 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	pipex_mult(t_args *args, char **argv)
 	dup2_close(args->outfile, STDOUT_FILENO);
 	if (execve(args->cmd_path, args->cmd, args->envp) == -1)
 		print_error("command not found", 127);
+	if (args->infile < 0)
+		exit(1);
 }
 
 int	main(int argc, char **argv, char **envp)
