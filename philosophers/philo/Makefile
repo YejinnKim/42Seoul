@@ -6,15 +6,16 @@
 #    By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/13 16:52:18 by yejinkim          #+#    #+#              #
-#    Updated: 2023/03/13 22:29:24 by yejinkim         ###   ########seoul.kr   #
+#    Updated: 2023/03/15 20:51:33 by yejinkim         ###   ########seoul.kr   #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
-SRCS =  main.c
+SRCS =  main.c \
+		init.c
 
 OBJS = $(SRCS:.c=.o)
 
