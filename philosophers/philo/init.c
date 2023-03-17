@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 17:06:26 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/03/15 21:56:18 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/17 17:45:17 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,15 @@
 
 // exit(), atoi() 수정하기
 
-void	init_philo(t_philo *philo, t_info *info)
+t_philo	*init_philo(t_info *info)
 {
+	t_philo	*philo;
 	int	i;
 	int num;
 
 	i = 0;
 	num = info->philo_num;
+	philo = malloc(sizeof(t_philo) * num);
 	while (i < num)
 	{
 		philo[i].num = i;
@@ -28,10 +30,11 @@ void	init_philo(t_philo *philo, t_info *info)
 		philo[i].right_fork = i;
 		philo[i].left_fork = (i + 1) % num;
 		philo[i].eat_num = 0;
-		philo[i].end_time = 0; // 없어도 되나?
+		philo[i].last_eat = 0;
 		philo[i].info = info;
 		i++;
 	}
+	return philo;
 }
 
 void	init_mutex(t_info *info)
@@ -48,8 +51,6 @@ void	init_mutex(t_info *info)
 			exit(0);
 		i++;
 	}
-	if (pthread_mutex_init(&(info->eating), NULL))
-		exit(0);
 	if (pthread_mutex_init(&(info->print), NULL))
 		exit(0);
 }
@@ -64,5 +65,7 @@ void	init_info(int argc, char **argv, t_info *info)
 		info->must_eat = -1;
 	else 
 		info->must_eat = atoi(argv[5]);
+	info->start_time = get_time();
+	info->timestamp = 0;
 	init_mutex(info);
 }
