@@ -26,7 +26,7 @@
 # define THINK	4
 # define DIE	5
 
-// 시간 변수 int -> long 변경하기
+# define START -1
 
 typedef struct	s_info
 {
@@ -35,9 +35,9 @@ typedef struct	s_info
 	int				eat_time;
 	int				sleep_time;
 	int				must_eat;
-	long			start_time;
-	int				timestamp;
 	int				end;
+	long long		start_time;
+	long long		timestamp;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 }	t_info;
@@ -45,11 +45,11 @@ typedef struct	s_info
 typedef struct	s_philo
 {
 	int			num;
-	int			die;
 	int			right_fork;
 	int			left_fork;
+	int			eating;
 	int			eat_num;
-	int			last_eat;
+	long long	last_eat;
 	t_info		*info;
 	pthread_t	thread;
 }	t_philo;
@@ -57,6 +57,10 @@ typedef struct	s_philo
 void	init_info(int argc, char **argv, t_info *info);
 void	init_mutex(t_info *info);
 t_philo	*init_philo(t_info *info);
-long	get_time(void);
+long long	get_time(long long value);
+void	print_cmd(int type, t_philo *philo, t_info *info);
+void	*do_philo(t_philo *philo);
+void	usleep_time(t_info *info, int time);
+void	check_philo(t_philo *philo, t_info *info);
 
 #endif

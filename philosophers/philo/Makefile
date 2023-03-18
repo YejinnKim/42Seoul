@@ -15,7 +15,9 @@ NAME = philo
 CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS =  main.c \
-		init.c
+		init.c \
+		philo.c \
+		check.c
 
 OBJS = $(SRCS:.c=.o)
 
