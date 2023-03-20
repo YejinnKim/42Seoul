@@ -14,30 +14,41 @@
 
 int    check_die(t_philo *philo, t_info *info)
 {
-	if ((philo->last_eat + info->die_time <= get_time(info->start_time)))
+	int die_time;
+	int start_time;
+
+	//pthread_mutex_lock(&info->check);
+	die_time = info->die_time;
+	start_time = info->start_time;
+	//pthread_mutex_unlock(&info->check);
+	if ((philo->last_eat + die_time <= get_time(start_time)))
 	{
 		if (philo->eat_num == info->must_eat)
 			return (-1);
-        info->timestamp = get_time(info->start_time);
+		//pthread_mutex_lock(&info->time);
+        info->timestamp = get_time(start_time);
+		//pthread_mutex_unlock(&info->time);
 		print_cmd(DIE, philo, philo->info);
+		//pthread_mutex_lock(&info->check);
         info->end = 1;
+		//pthread_mutex_unlock(&info->check);
         return (1);
     }
     return (0);
 }
 
-int    check_eat(t_philo *philo, t_info *info)
+int    check_eat(t_philo *philo, int num, int eat)
 {
     int i;
     
     i = 0;
-	while (i < info->philo_num)
+	while (i < num)
 	{
-		if (philo[i].eat_num != info->must_eat)
+		if (philo[i].eat_num != eat)
 			break ;
 		i++;
 	}
-	if (i == info->philo_num)
+	if (i == num)
 		return (1);
     return (0);
 }
@@ -46,19 +57,25 @@ void	check_philo(t_philo *philo, t_info *info)
 {
 	int	i;
     int die;
+	int num;
+	int eat;
 
-	while (!info->end)
+	//pthread_mutex_lock(&info->check);
+	num = info->philo_num;
+	eat = info->must_eat;
+	//pthread_mutex_unlock(&info->check);
+	while (!info->end) 
 	{
 		i = 0;
-		while (i < info->philo_num)
+		while (i < num)
 		{
             die = check_die(&philo[i], info);
             if (die)
                 return ;
             else if (die == -1)
                 continue ;
-			if (check_eat(philo, info))
-                return ;
+			if (check_eat(philo, num, eat))
+            	return ;
 			i++;
 		}
 	}

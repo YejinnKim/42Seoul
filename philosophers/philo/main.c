@@ -22,6 +22,8 @@ void	destroy_philo(t_philo *philo, t_info *info)
 		pthread_mutex_destroy(&(info->forks[i]));
 	free(info->forks);
 	pthread_mutex_destroy(&(info->print));
+	pthread_mutex_destroy(&(info->time));
+	pthread_mutex_destroy(&(info->check));
 }
 
 long long	get_time(long long value)
@@ -37,11 +39,19 @@ long long	get_time(long long value)
 		return (time - value);
 }
 
-void	usleep_time(t_info *info, int time)
+long long	usleep_time(t_info *info, int time)
 {
-	while (time >= get_time(info->start_time) - info->timestamp)
-		usleep(1);
+	long long	timestamp;
+
+	//pthread_mutex_lock(&info->time);
+	timestamp = info->timestamp;
+	//pthread_mutex_unlock(&info->time);
+	while (time >= get_time(info->start_time) - timestamp)
+		usleep(10);
+	//pthread_mutex_lock(&info->time);
 	info->timestamp = get_time(info->start_time) - 1;
+	//pthread_mutex_unlock(&info->time);
+	return (get_time(info->start_time) - 1);
 }
 
 
@@ -49,18 +59,19 @@ void	create_philo(t_philo *philo, t_info *info)
 {
 	int	i;
 
+	if (info->philo_num == 1)
+	{
+		print_cmd(FORK, &philo[0], info);
+		check_philo(philo, info);
+		return ;
+	}
 	i = -1; 
 	while (++i < info->philo_num)
 		pthread_create(&philo[i].thread, NULL, (void *)do_philo, (t_philo *)&philo[i]);
 	check_philo(philo, info);
 	i = -1;
 	while(++i < info->philo_num)
-	{
-		if (info->end)
-			pthread_detach(philo[i].thread);
-		else
-			pthread_join(philo[i].thread, NULL);
-	}
+		pthread_join(philo[i].thread, NULL);
 }
 
 int main(int argc, char **argv)
@@ -70,8 +81,11 @@ int main(int argc, char **argv)
 	
 	if (argc != 5 && argc != 6)
 		return (0);
-	init_info(argc, argv, &info);
+	if (!init_info(argc, argv, &info))
+		return (0);
 	philo = init_philo(&info);
+	if (!philo)
+		return (0);
 	create_philo(philo, &info);
 	destroy_philo(philo, &info);
 	return (0);

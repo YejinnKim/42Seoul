@@ -14,21 +14,28 @@
 
 void	print_cmd(int type, t_philo *philo, t_info *info)
 {
-	pthread_mutex_lock(&info->print);
-	if (!info->end)
+	int end;
+
+	//pthread_mutex_lock(&info->check);
+    end = info->end;
+	//pthread_mutex_unlock(&info->check);
+	//pthread_mutex_lock(&info->print);
+	//pthread_mutex_lock(&info->time);
+	if (!end)
 	{
 		if (type == FORK)
 			printf("%lld %d has taken a fork\n", info->timestamp, philo->num);
 		else if (type == EAT)
-			printf("%lld %d is eating [%lld]\n", info->timestamp, philo->num, philo->last_eat);
+			printf("%lld %d is eating\n", info->timestamp, philo->num);
 		else if (type == SLEEP)
 			printf("%lld %d is sleeping\n", info->timestamp, philo->num);
 		else if (type == THINK)
 			printf("%lld %d is thinking\n", info->timestamp, philo->num);
 		else if (type == DIE)
-			printf("%lld %d died [%lld]\n", info->timestamp, philo->num, philo->last_eat);
+			printf("%lld %d died\n", info->timestamp, philo->num);
 	}
-	pthread_mutex_unlock(&info->print);
+	//pthread_mutex_unlock(&info->time);
+	//pthread_mutex_unlock(&info->print);
 }
 
 void    eating(t_philo *philo, t_info *info)
@@ -37,10 +44,11 @@ void    eating(t_philo *philo, t_info *info)
 	print_cmd(FORK, philo, info);
 	pthread_mutex_lock(&info->forks[philo->right_fork]);
 	print_cmd(FORK, philo, info);
-	philo->eat_num++;
 	print_cmd(EAT, philo, info);
-	philo->last_eat = info->timestamp + info->eat_time;
-	usleep_time(info, info->eat_time);
+	//pthread_mutex_lock(&info->check);
+	philo->eat_num++;
+	//pthread_mutex_unlock(&info->check);
+	philo->last_eat = usleep_time(info, info->eat_time);
 	pthread_mutex_unlock(&info->forks[philo->left_fork]);
 	pthread_mutex_unlock(&info->forks[philo->right_fork]);
 }
@@ -59,14 +67,16 @@ void	thinking(t_philo *philo, t_info *info)
 void	*do_philo(t_philo *philo)
 {
 	if (philo->num % 2 == 0)
-		usleep(2000); // 1000으로 수정?
+		usleep(1000);
 	while (1)
 	{
-		if (philo->num % 2 == 0) // 삭제?
-			usleep(200);
         eating(philo, philo->info);
+		//pthread_mutex_lock(&philo->info->check);
 		if (philo->eat_num == philo->info->must_eat)
 			break ;
+		if (philo->info->end)
+			break ;
+		//pthread_mutex_unlock(&philo->info->check);
         sleeping(philo, philo->info);
 		thinking(philo, philo->info);
 	}
