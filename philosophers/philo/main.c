@@ -14,28 +14,20 @@
 
 void	destroy_philo(t_philo *philo, t_info *info)
 {
-	int	i;
-
-	i = -1;
+	dsty_mtx(info->philo_num, info->forks, &info->time, &info->check);
 	free(philo);
-	while (++i < info->philo_num)
-		pthread_mutex_destroy(&(info->forks[i]));
-	free(info->forks);
-	pthread_mutex_destroy(&(info->print));
-	pthread_mutex_destroy(&(info->time));
-	pthread_mutex_destroy(&(info->check));
 }
 
 long long	get_time(long long value)
 {
-	struct timeval tv;
-	long long	time;
-	
+	struct timeval	tv;
+	long long		time;
+
 	gettimeofday(&tv, NULL);
 	time = (tv.tv_sec * 1000000 + tv.tv_usec) / 1000;
 	if (value == START)
 		return (time);
-	else 
+	else
 		return (time - value);
 }
 
@@ -43,17 +35,16 @@ long long	usleep_time(t_info *info, int time)
 {
 	long long	timestamp;
 
-	//pthread_mutex_lock(&info->time);
+	pthread_mutex_lock(&info->time);
 	timestamp = info->timestamp;
-	//pthread_mutex_unlock(&info->time);
+	pthread_mutex_unlock(&info->time);
 	while (time >= get_time(info->start_time) - timestamp)
 		usleep(10);
-	//pthread_mutex_lock(&info->time);
+	pthread_mutex_lock(&info->time);
 	info->timestamp = get_time(info->start_time) - 1;
-	//pthread_mutex_unlock(&info->time);
+	pthread_mutex_unlock(&info->time);
 	return (get_time(info->start_time) - 1);
 }
-
 
 void	create_philo(t_philo *philo, t_info *info)
 {
@@ -61,24 +52,27 @@ void	create_philo(t_philo *philo, t_info *info)
 
 	if (info->philo_num == 1)
 	{
-		print_cmd(FORK, &philo[0], info);
-		check_philo(philo, info);
-		return ;
+		pthread_create(&philo[0].thread, NULL, \
+			(void *)do_one_philo, (t_philo *)&philo[0]);
 	}
-	i = -1; 
-	while (++i < info->philo_num)
-		pthread_create(&philo[i].thread, NULL, (void *)do_philo, (t_philo *)&philo[i]);
+	else
+	{
+		i = -1;
+		while (++i < info->philo_num)
+			pthread_create(&philo[i].thread, NULL, \
+				(void *)do_philo, (t_philo *)&philo[i]);
+	}
 	check_philo(philo, info);
 	i = -1;
-	while(++i < info->philo_num)
+	while (++i < info->philo_num)
 		pthread_join(philo[i].thread, NULL);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_info	info;
 	t_philo	*philo;
-	
+
 	if (argc != 5 && argc != 6)
 		return (0);
 	if (!init_info(argc, argv, &info))

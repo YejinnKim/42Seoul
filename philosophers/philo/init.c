@@ -39,37 +39,36 @@ int	ft_atoi(const char *str)
 		return ((int)result);
 }
 
-int	destroy_mutex(int flag, t_info *info)
+int	dsty_mtx(int n, pthread_mutex_t *f, pthread_mutex_t *t, pthread_mutex_t *c)
 {
 	int	i;
 
-	if (flag == 1 || flag == 2 || flag == 3)
+	if (f)
 	{
 		i = -1;
-		while (++i < info->philo_num)
-			pthread_mutex_destroy(&(info->forks[i]));
+		while (++i < n)
+			pthread_mutex_destroy(&(f[i]));
+		free(f);
 	}
-	if (flag == 2 || flag == 3)
-		pthread_mutex_destroy(&(info->print));
-	if (flag == 3)
-		pthread_mutex_destroy(&(info->check));
-	free(info->forks);
+	if (t)
+		pthread_mutex_destroy(t);
+	if (c)
+		pthread_mutex_destroy(c);
 	return (0);
 }
 
 t_philo	*init_philo(t_info *info)
 {
 	t_philo	*philo;
-	int	i;
-	int num;
+	int		i;
+	int		num;
 
 	i = 0;
 	num = info->philo_num;
 	philo = malloc(sizeof(t_philo) * num);
 	if (!philo)
 	{
-		pthread_mutex_destroy(&(info->time));
-		destroy_mutex(2, info);
+		dsty_mtx(info->philo_num, info->forks, &info->time, &info->check);
 		return (0);
 	}
 	while (i < num)
@@ -82,7 +81,7 @@ t_philo	*init_philo(t_info *info)
 		philo[i].info = info;
 		i++;
 	}
-	return philo;
+	return (philo);
 }
 
 int	init_mutex(t_info *info)
@@ -99,12 +98,10 @@ int	init_mutex(t_info *info)
 			return (0);
 		i++;
 	}
-	if (pthread_mutex_init(&(info->print), NULL))
-		return (destroy_mutex(1, info));
 	if (pthread_mutex_init(&(info->time), NULL))
-		return (destroy_mutex(2, info));
+		return (dsty_mtx(info->philo_num, info->forks, NULL, NULL));
 	if (pthread_mutex_init(&(info->check), NULL))
-		return (destroy_mutex(3, info));
+		return (dsty_mtx(info->philo_num, info->forks, &info->time, NULL));
 	return (1);
 }
 
@@ -116,10 +113,10 @@ int	init_info(int argc, char **argv, t_info *info)
 	info->sleep_time = ft_atoi(argv[4]);
 	if (argc == 5)
 		info->must_eat = -2;
-	else 
+	else
 		info->must_eat = ft_atoi(argv[5]);
-	if (info->philo_num == -1 || info->die_time == -1 \
-		|| info->eat_time == -1 || info->sleep_time == -1 || info->must_eat == -1)
+	if (info->philo_num == -1 || info->die_time == -1 || \
+		info->eat_time == -1 || info->sleep_time == -1 || info->must_eat == -1)
 		return (0);
 	info->start_time = get_time(START);
 	info->timestamp = 0;
