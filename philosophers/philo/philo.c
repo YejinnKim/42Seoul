@@ -51,7 +51,7 @@ int	eating(t_philo *philo, t_info *info)
 	usleep_time(info, info->eat_time);
 	pthread_mutex_unlock(&info->forks[philo->left_fork]);
 	pthread_mutex_unlock(&info->forks[philo->right_fork]);
-	if (philo->eat_num == philo->info->must_eat)
+	if (philo->eat_num == info->must_eat)
 		return (1);
 	return (0);
 }

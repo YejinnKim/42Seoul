@@ -18,8 +18,10 @@ int	check_one(t_info *info)
 	{
 		while (1)
 		{
+			pthread_mutex_lock(&info->end_mutex);
 			if (info->end)
 				return (1);
+			pthread_mutex_unlock(&info->end_mutex);
 		}
 	}
 	return (0);
