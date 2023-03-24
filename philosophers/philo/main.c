@@ -31,7 +31,7 @@ long long	get_time(long long value)
 		return (time - value);
 }
 
-long long	usleep_time(t_info *info, int time)
+void	usleep_time(t_info *info, int time)
 {
 	long long	timestamp;
 
@@ -43,25 +43,16 @@ long long	usleep_time(t_info *info, int time)
 	pthread_mutex_lock(&info->time);
 	info->timestamp = get_time(info->start_time) - 1;
 	pthread_mutex_unlock(&info->time);
-	return (get_time(info->start_time) - 1);
 }
 
 void	create_philo(t_philo *philo, t_info *info)
 {
 	int	i;
 
-	if (info->philo_num == 1)
-	{
-		pthread_create(&philo[0].thread, NULL, \
-			(void *)do_one_philo, (t_philo *)&philo[0]);
-	}
-	else
-	{
-		i = -1;
-		while (++i < info->philo_num)
-			pthread_create(&philo[i].thread, NULL, \
-				(void *)do_philo, (t_philo *)&philo[i]);
-	}
+	i = -1;
+	while (++i < info->philo_num)
+		pthread_create(&philo[i].thread, NULL, \
+			(void *)do_philo, (t_philo *)&philo[i]);
 	check_philo(philo, info);
 	i = -1;
 	while (++i < info->philo_num)

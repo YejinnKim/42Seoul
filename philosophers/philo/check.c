@@ -12,23 +12,6 @@
 
 #include "philo.h"
 
-void	*do_one_philo(t_philo *philo)
-{
-	int	end;
-
-	pthread_mutex_lock(&philo->info->check);
-	end = philo->info->end;
-	pthread_mutex_unlock(&philo->info->check);
-	while (1)
-	{
-		pthread_mutex_lock(&philo->info->forks[philo->left_fork]);
-		print_cmd(FORK, philo, philo->info);
-		if (!end)
-			break ;
-	}
-	return (0);
-}
-
 int	check_die(t_philo *philo, t_info *info)
 {
 	int	last_eat;
@@ -46,32 +29,8 @@ int	check_die(t_philo *philo, t_info *info)
 		info->timestamp = get_time(info->start_time);
 		pthread_mutex_unlock(&info->time);
 		print_cmd(DIE, philo, info);
-		pthread_mutex_lock(&info->check);
-		info->end = 1;
-		pthread_mutex_unlock(&info->check);
 		return (1);
 	}
-	return (0);
-}
-
-int	check_eat(t_philo *philo, t_info *info)
-{
-	int	i;
-
-	i = 0;
-	while (i < info->philo_num)
-	{
-		pthread_mutex_lock(&info->check);
-		if (philo[i].eat_num != info->must_eat)
-		{
-			pthread_mutex_unlock(&info->check);
-			break ;
-		}
-		pthread_mutex_unlock(&info->check);
-		i++;
-	}
-	if (i == info->philo_num)
-		return (1);
 	return (0);
 }
 
@@ -90,9 +49,8 @@ void	check_philo(t_philo *philo, t_info *info)
 				return ;
 			else if (die == -1)
 				continue ;
-			if (check_eat(philo, info))
-				return ;
 			i++;
 		}
 	}
+	
 }

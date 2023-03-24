@@ -41,6 +41,7 @@ typedef struct s_info
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	time;
 	pthread_mutex_t	check;
+	pthread_mutex_t end_mutex;
 }	t_info;
 
 typedef struct s_philo
@@ -55,7 +56,7 @@ typedef struct s_philo
 }	t_philo;
 
 void		create_philo(t_philo *philo, t_info *info);
-long long	usleep_time(t_info *info, int time);
+void		usleep_time(t_info *info, int time);
 long long	get_time(long long value);
 void		destroy_philo(t_philo *philo, t_info *info);
 int			init_info(int argc, char **argv, t_info *info);
@@ -65,13 +66,13 @@ int			dsty_mtx(int n, pthread_mutex_t *f, \
 						pthread_mutex_t *t, pthread_mutex_t *c);
 int			ft_atoi(const char *str);
 void		*do_philo(t_philo *philo);
-void		thinking(t_philo *philo, t_info *info);
-void		sleeping(t_philo *philo, t_info *info);
-void		eating(t_philo *philo, t_info *info);
-void		print_cmd(int type, t_philo *philo, t_info *info);
-void		*do_one_philo(t_philo *philo);
+int			thinking(t_philo *philo, t_info *info);
+int			sleeping(t_philo *philo, t_info *info);
+int			eating(t_philo *philo, t_info *info);
+int			print_cmd(int type, t_philo *philo, t_info *info);
+// void		*do_one_philo(t_philo *philo);
 void		check_philo(t_philo *philo, t_info *info);
-int			check_eat(t_philo *philo, t_info *info);
+// int			check_eat(t_philo *philo, t_info *info);
 int			check_die(t_philo *philo, t_info *info);
 
 #endif

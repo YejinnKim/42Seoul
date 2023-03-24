@@ -102,6 +102,7 @@ int	init_mutex(t_info *info)
 		return (dsty_mtx(info->philo_num, info->forks, NULL, NULL));
 	if (pthread_mutex_init(&(info->check), NULL))
 		return (dsty_mtx(info->philo_num, info->forks, &info->time, NULL));
+	pthread_mutex_init(&(info->end_mutex), NULL);
 	return (1);
 }
 
