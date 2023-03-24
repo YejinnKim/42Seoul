@@ -18,19 +18,7 @@ int	print_cmd(int type, t_philo *philo, t_info *info)
 	if (!info->end)
 	{
 		pthread_mutex_lock(&info->time);
-		if (type == FORK)
-			printf("%lld %d has taken a fork\n", info->timestamp, philo->num);
-		else if (type == EAT)
-			printf("%lld %d is eating\n", info->timestamp, philo->num);
-		else if (type == SLEEP)
-			printf("%lld %d is sleeping\n", info->timestamp, philo->num);
-		else if (type == THINK)
-			printf("%lld %d is thinking\n", info->timestamp, philo->num);
-		else if (type == DIE)
-		{
-			printf("%lld %d died\n", info->timestamp, philo->num);
-			info->end = 1;
-		}
+		print_type(type, philo, info);
 		pthread_mutex_unlock(&info->time);
 		pthread_mutex_unlock(&info->end_mutex);
 		return (0);
@@ -46,6 +34,8 @@ int	eating(t_philo *philo, t_info *info)
 {
 	pthread_mutex_lock(&info->forks[philo->left_fork]);
 	if (print_cmd(FORK, philo, info))
+		return (1);
+	if (check_one(info))
 		return (1);
 	pthread_mutex_lock(&info->forks[philo->right_fork]);
 	if (print_cmd(FORK, philo, info))

@@ -14,7 +14,7 @@
 
 void	destroy_philo(t_philo *philo, t_info *info)
 {
-	dsty_mtx(info->philo_num, info->forks, &info->time, &info->check);
+	dstr(info, &info->time, &info->check, &info->end_mutex);
 	free(philo);
 }
 
@@ -39,7 +39,7 @@ void	usleep_time(t_info *info, int time)
 	timestamp = info->timestamp;
 	pthread_mutex_unlock(&info->time);
 	while (time >= get_time(info->start_time) - timestamp)
-		usleep(10);
+		usleep(150);
 	pthread_mutex_lock(&info->time);
 	info->timestamp = get_time(info->start_time) - 1;
 	pthread_mutex_unlock(&info->time);

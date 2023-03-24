@@ -12,6 +12,19 @@
 
 #include "philo.h"
 
+int	check_one(t_info *info)
+{
+	if (info->philo_num == 1)
+	{
+		while (1)
+		{
+			if (info->end)
+				return (1);
+		}
+	}
+	return (0);
+}
+
 int	check_die(t_philo *philo, t_info *info)
 {
 	int	last_eat;
@@ -52,5 +65,21 @@ void	check_philo(t_philo *philo, t_info *info)
 			i++;
 		}
 	}
-	
+}
+
+void	print_type(int type, t_philo *philo, t_info *info)
+{
+	if (type == FORK)
+		printf("%lld %d has taken a fork\n", info->timestamp, philo->num);
+	else if (type == EAT)
+		printf("%lld %d is eating\n", info->timestamp, philo->num);
+	else if (type == SLEEP)
+		printf("%lld %d is sleeping\n", info->timestamp, philo->num);
+	else if (type == THINK)
+		printf("%lld %d is thinking\n", info->timestamp, philo->num);
+	else if (type == DIE)
+	{
+		printf("%lld %d died\n", info->timestamp, philo->num);
+		info->end = 1;
+	}
 }

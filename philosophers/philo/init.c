@@ -39,21 +39,23 @@ int	ft_atoi(const char *str)
 		return ((int)result);
 }
 
-int	dsty_mtx(int n, pthread_mutex_t *f, pthread_mutex_t *t, pthread_mutex_t *c)
+int	dstr(t_info *i, pthread_mutex_t *t, pthread_mutex_t *c, pthread_mutex_t *e)
 {
-	int	i;
+	int	n;
 
-	if (f)
+	if (i)
 	{
-		i = -1;
-		while (++i < n)
-			pthread_mutex_destroy(&(f[i]));
-		free(f);
+		n = -1;
+		while (++n < i->philo_num)
+			pthread_mutex_destroy(&(i->forks[n]));
+		free(i->forks);
 	}
 	if (t)
 		pthread_mutex_destroy(t);
 	if (c)
 		pthread_mutex_destroy(c);
+	if (e)
+		pthread_mutex_destroy(e);
 	return (0);
 }
 
@@ -68,7 +70,7 @@ t_philo	*init_philo(t_info *info)
 	philo = malloc(sizeof(t_philo) * num);
 	if (!philo)
 	{
-		dsty_mtx(info->philo_num, info->forks, &info->time, &info->check);
+		dstr(info, &info->time, &info->check, &info->end_mutex);
 		return (0);
 	}
 	while (i < num)
@@ -99,10 +101,11 @@ int	init_mutex(t_info *info)
 		i++;
 	}
 	if (pthread_mutex_init(&(info->time), NULL))
-		return (dsty_mtx(info->philo_num, info->forks, NULL, NULL));
+		return (dstr(info, NULL, NULL, NULL));
 	if (pthread_mutex_init(&(info->check), NULL))
-		return (dsty_mtx(info->philo_num, info->forks, &info->time, NULL));
-	pthread_mutex_init(&(info->end_mutex), NULL);
+		return (dstr(info, &info->time, NULL, NULL));
+	if (pthread_mutex_init(&(info->end_mutex), NULL))
+		return (dstr(info, &info->time, &info->check, NULL));
 	return (1);
 }
 
