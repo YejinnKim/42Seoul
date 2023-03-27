@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/15 17:06:26 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/03/17 17:45:17 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/27 16:18:33 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	ft_atoi(const char *str)
 		if (result > (long)2147483647)
 			return (-1);
 	}
+	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ')
+		i++;
 	if (len != i || result == 0)
 		return (-1);
 	else

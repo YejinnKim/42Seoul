@@ -6,7 +6,7 @@
 /*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/13 16:55:29 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/03/17 22:46:09 by yejinkim         ###   ########seoul.kr  */
+/*   Updated: 2023/03/27 16:20:04 by yejinkim         ###   ########seoul.kr  */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void		*do_philo(t_philo *philo);
 int			thinking(t_philo *philo, t_info *info);
 int			sleeping(t_philo *philo, t_info *info);
 int			eating(t_philo *philo, t_info *info);
+int			fork_ing(t_philo *philo, t_info *info);
 int			print_cmd(int type, t_philo *philo, t_info *info);
 void		print_type(int type, t_philo *philo, t_info *info);
 void		check_philo(t_philo *philo, t_info *info);
