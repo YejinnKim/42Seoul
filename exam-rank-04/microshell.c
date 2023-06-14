@@ -71,7 +71,8 @@ int main(int argc, char **argv, char **envp)
         {
             if (i && (!argv[i] || !strcmp(argv[i], ";")))
                 flag = 1;
-            ft_execute(argv, envp, i, flag);
+			if (i)
+				ft_execute(argv, envp, i, flag);
             cnt++;
         }
     }
