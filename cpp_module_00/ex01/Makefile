@@ -1,22 +1,12 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/13 14:55:00 by yejinkim          #+#    #+#              #
-#    Updated: 2023/06/13 15:01:57 by yejinkim         ###   ########seoul.kr   #
-#                                                                              #
-# **************************************************************************** #
-
 NAME		=	phonebook
 
 CC			=	c++
 
 CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98
 
-SRCS		=	phonebook.cpp
+SRCS		=	main.cpp \
+				Contact.cpp \
+				PhoneBook.cpp 
 
 OBJS		=	$(SRCS:.cpp=.o)
 

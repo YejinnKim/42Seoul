@@ -1,23 +1,21 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   contact.hpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/13 16:48:29 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/06/13 22:53:12 by yejinkim         ###   ########seoul.kr  */
-/*                                                                            */
-/* ************************************************************************** */
+#ifndef CONTACT_HPP
+#define CONTACT_HPP
 
+#include <iostream>
 #include <string>
 
-// 82p. 반환형이 참조형인 경우
 class Contact
 {
 	private:
-		
+		std::string	first_name;
+		std::string	last_name;
+		std::string	nickname;
+		std::string	phone_number;
+		std::string	darkest_secrete;
 	public:
-		
+		void	input_contact();
+		void	print_list(int index);
+		void	print_detail();
 };
 
+#endif

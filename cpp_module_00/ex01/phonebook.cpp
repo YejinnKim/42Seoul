@@ -1,16 +1,33 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   phonebook.cpp                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yejinkim <yejinkim@student.42seoul.kr>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/13 14:58:22 by yejinkim          #+#    #+#             */
-/*   Updated: 2023/06/13 15:02:11 by yejinkim         ###   ########seoul.kr  */
-/*                                                                            */
-/* ************************************************************************** */
+#include "PhoneBook.hpp"
+#include "Contact.hpp"
 
-int main()
+PhoneBook::PhoneBook()
 {
-	return (0);
+	index = -1;
+	max = false;
+}
+
+void	PhoneBook::add()
+{
+	if (index == 7)
+		max = true;
+	++index %= 8;
+	contacts[index].input_contact();
+}
+
+void	PhoneBook::search()
+{
+	int input;
+	int	cnt;
+
+	if (max)
+		cnt = 7;
+	else
+		cnt = index;
+	for (int i = 0; i <= cnt; i++)
+		contacts[i].print_list(i);
+	std::cout << "Enter the index : " << std::endl;
+	std::cin >> input;
+	if (input >= 0 && input <= cnt)
+		contacts[input].print_detail();
 }
