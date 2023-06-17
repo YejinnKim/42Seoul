@@ -11,8 +11,9 @@ class PhoneBook
 		bool	max;
 	public:
 		PhoneBook();
-		void	add();
-		void	search();
+		~PhoneBook();
+		void		Add();
+		void		Search();
 };
 
 #endif

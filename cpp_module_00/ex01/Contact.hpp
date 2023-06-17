@@ -2,7 +2,8 @@
 #define CONTACT_HPP
 
 #include <iostream>
-#include <string>
+#include <iomanip>
+#include "utils.hpp"
 
 class Contact
 {
@@ -13,9 +14,10 @@ class Contact
 		std::string	phone_number;
 		std::string	darkest_secrete;
 	public:
-		void	input_contact();
-		void	print_list(int index);
-		void	print_detail();
+		void	SetContact();
+		void	GetContact();
+		void	GetName(int index);
+		void	PrintName(std::string str);
 };
 
 #endif

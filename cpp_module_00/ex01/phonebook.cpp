@@ -7,27 +7,40 @@ PhoneBook::PhoneBook()
 	max = false;
 }
 
-void	PhoneBook::add()
+PhoneBook::~PhoneBook() {}
+
+void	PhoneBook::Add()
 {
 	if (index == 7)
 		max = true;
 	++index %= 8;
-	contacts[index].input_contact();
+	contacts[index].SetContact();
 }
 
-void	PhoneBook::search()
+void	PhoneBook::Search()
 {
-	int input;
-	int	cnt;
+	std::string	input;
+	int	index = this->index;
 
+	if (index < 0)
+	{
+		std::cout << "Phonebook is empty!" << std::endl;
+		return ;
+	}
 	if (max)
-		cnt = 7;
+		index = 7;
+	std::cout << std::right << std::setw(10) << "Index" << " | ";
+	std::cout << std::right << std::setw(10) << "First Name" << " | ";
+	std::cout << std::right << std::setw(10) << "Last Name" << " | ";
+	std::cout << std::right << std::setw(10) << "Nickname" << std::endl;
+	for (int i = 0; i <= index; i++)
+		contacts[i].GetName(i);
+	
+	input = ft_getline("Enter the index > ");
+	if (std::cin.eof())
+		exit(0);
+	if (input.length() == 1 && (input[0] >= '0' && input[0] <= (this->index + '0')))
+		contacts[input[0] - '0'].GetContact();
 	else
-		cnt = index;
-	for (int i = 0; i <= cnt; i++)
-		contacts[i].print_list(i);
-	std::cout << "Enter the index : " << std::endl;
-	std::cin >> input;
-	if (input >= 0 && input <= cnt)
-		contacts[input].print_detail();
+		std::cout << "Invalid index!" << std::endl;
 }
