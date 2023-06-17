@@ -37,10 +37,9 @@ void	PhoneBook::Search()
 		contacts[i].GetName(i);
 	
 	input = ft_getline("Enter the index > ");
-	if (std::cin.eof())
-		exit(0);
-	if (input.length() == 1 && (input[0] >= '0' && input[0] <= (this->index + '0')))
-		contacts[input[0] - '0'].GetContact();
+	int tmp = (input[0] - '0') - 1;
+	if (input.length() == 1 && (tmp >= 0 && tmp <= index))
+		contacts[tmp].GetContact();
 	else
 		std::cout << "Invalid index!" << std::endl;
 }

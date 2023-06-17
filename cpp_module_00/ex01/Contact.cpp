@@ -20,7 +20,7 @@ void	Contact::GetContact()
 
 void	Contact::GetName(int index)
 {
-	std::cout << std::right << std::setw(10) << index << " | ";
+	std::cout << std::right << std::setw(10) << index + 1 << " | ";
 	PrintName(first_name);
 	std::cout << " | ";
 	PrintName(last_name);
