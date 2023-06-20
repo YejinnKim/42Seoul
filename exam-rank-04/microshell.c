@@ -52,7 +52,7 @@ void    ft_execute(char **argv, char **envp, int i, int flag)
 
 int main(int argc, char **argv, char **envp)
 {
-    int i=0, flag=0, cnt=0;
+    int i=0, cnt=0, flag;
     int tmp_stdin, tmp_stdout;
 
     if (argc == 1)
@@ -61,6 +61,7 @@ int main(int argc, char **argv, char **envp)
     tmp_stdout = dup(STDOUT_FILENO);
     while (argv[i] && argv[i + 1])
     {
+		flag = 0;
         argv = &argv[i + 1];
         i = 0;
         while (argv[i] && strcmp(argv[i], ";") && strcmp(argv[i], "|"))
