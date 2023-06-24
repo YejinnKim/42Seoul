@@ -12,7 +12,6 @@ std::string ft_getline(std::string str)
 	return (cmd);
 }
 
-// p150. 정보 은닉
 int main()
 {
 	PhoneBook	phonebook;
