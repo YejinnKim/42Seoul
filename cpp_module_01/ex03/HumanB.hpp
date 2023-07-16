@@ -6,13 +6,13 @@
 class HumanB
 {
 	private:
-		Weapon 		weapon;
 		std::string	name;
+		Weapon 		*weapon;
 	public:
 		HumanB(std::string name);
 		~HumanB();
 		void	attack();
-		void	setWeapon(Weapon weapon);
+		void	setWeapon(Weapon &weapon);
 };
 
 #endif
