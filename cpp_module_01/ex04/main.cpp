@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <stdlib.h> // ?
+#include <stdlib.h>
 
 void	print_error(std::string str)
 {
@@ -32,7 +32,7 @@ void	replace_line(std::string s1, std::string s2, std::ifstream &ifs, std::ofstr
 		else
 		{
 			flag = true;
-			ofs << line;
+			ofs << line << std::endl;
 		}
 		if (ifs.eof())
 			break;
@@ -49,11 +49,11 @@ int main(int argc, char **argv)
 		print_error("There're not 3 arguments.");
 
 	filename = argv[1];
-	ifs.open(filename.c_str()); // c_str()
+	ifs.open(filename);
 	if (ifs.fail())
 		print_error("Can't open file.");
 	filename.append(".replace");
-	ofs.open(filename.c_str()); // c_str()
+	ofs.open(filename);
 	if (ofs.fail())
 		print_error("Can't open file.");
 
