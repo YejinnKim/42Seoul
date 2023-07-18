@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <stdlib.h>
 
 void	print_error(std::string str)
 {
@@ -17,25 +16,27 @@ void	replace_line(std::string s1, std::string s2, std::ifstream &ifs, std::ofstr
 
 	if (!s1.length())
 		print_error("s1 is empty.");
-	while (1)
+	while (!ifs.eof())
 	{
 		if (flag)
+		{
+			pos = 0;
 			std::getline(ifs, line);
-		pos = line.find(s1);
+		}
+		pos = line.find(s1, pos);
 		if (pos != std::string::npos)
 		{
 			line.erase(pos, s1.length());
 			line.insert(pos, s2);
+			pos += s2.length();
 		}
-		if (line.find(s1) != std::string::npos)
+		if (line.find(s1, pos) != std::string::npos)
 			flag = false;
 		else
 		{
 			flag = true;
 			ofs << line << std::endl;
 		}
-		if (ifs.eof())
-			break;
 	}
 }
 
