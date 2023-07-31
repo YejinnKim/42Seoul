@@ -1,6 +1,6 @@
 #include "Point.hpp"
 
-bool bsp(Point const a, Point const b, Point const c, Point const point)
+bool	bsp(Point const a, Point const b, Point const c, Point const point)
 {
 	Fixed	alpha = ((b.getY() - c.getY()) * (point.getX() - c.getX()) \
 					+ (c.getX() - b.getX()) * (point.getY() - c.getY())) \
