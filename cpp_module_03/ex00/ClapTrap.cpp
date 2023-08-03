@@ -78,8 +78,8 @@ void	ClapTrap::takeDamage(unsigned int amount)
 		hitPoints = 0;
 	else
 		hitPoints -= amount;
-	std::cout << "ClapTrap " << name << " has taken " 
-		<< amount << " damage" << std::endl;	
+	std::cout << "ClapTrap " << name << " takes " 
+		<< amount << " points of damage" << std::endl;	
 }
 
 void	ClapTrap::beRepaired(unsigned int amount)
@@ -88,8 +88,8 @@ void	ClapTrap::beRepaired(unsigned int amount)
 	{
 		hitPoints += amount;
 		energyPoints--;
-		std::cout << "ClapTrap " << name << " has been repaired of "
-				<< amount << " ernergy points" << std::endl;
+		std::cout << "ClapTrap " << name << " repairs "
+				<< amount << " energy points" << std::endl;
 	}
 	else
 		std::cout << "ClapTrap " << name << " is died" << std::endl;
@@ -97,7 +97,7 @@ void	ClapTrap::beRepaired(unsigned int amount)
 
 void	ClapTrap::printStatus()
 {
-	std::cout << "ClapTrap " << name << " HP: " << hitPoints 
-			<< ", EP: " << energyPoints
-			<< ", AD: " << attackDamage << std::endl;
+	std::cout << "ClapTrap " << name << " HitPoint: " << hitPoints 
+			<< ", EnergyPoint: " << energyPoints
+			<< ", AttackDamage: " << attackDamage << std::endl;
 }
