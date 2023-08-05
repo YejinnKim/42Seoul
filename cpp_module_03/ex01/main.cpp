@@ -11,6 +11,7 @@ int main()
 
 	a.attack("B");
 	b.takeDamage(a.getAttackDamage());
+	b.beRepaired(10);
 	a.printStatus();
 	b.printStatus();
 	std::cout << std::endl;
