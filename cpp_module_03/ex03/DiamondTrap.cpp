@@ -12,9 +12,8 @@ DiamondTrap::DiamondTrap()
 DiamondTrap::DiamondTrap(std::string name)
 {
 	this->name = name;
-	hitPoints = 0;
-	energyPoints = 0;
-	attackDamage = 0;
+	ClapTrap::name = name + "_clap_name";
+	energyPoints = 50;
 	std::cout << "DiamondTrap " << name << " constructor called" << std::endl;
 }
 
@@ -47,5 +46,6 @@ DiamondTrap::~DiamondTrap()
 
 void	DiamondTrap::whoAmI()
 {
-
+	std::cout << "DiamondTrap name: " << name << std::endl
+			<< "ClapTrap name: " << ClapTrap::name << std::endl;
 }
