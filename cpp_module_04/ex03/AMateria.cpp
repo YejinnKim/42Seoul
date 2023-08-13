@@ -1,4 +1,5 @@
 #include "AMateria.hpp"
+#include "ICharacter.hpp"
 
 AMateria::AMateria()
 {
@@ -35,5 +36,4 @@ std::string	const & AMateria::getType() const
 void	AMateria::use(ICharacter& target)
 {
 	(void)target;
-	std::cout << "* No Materia *" << std::endl;
 }
