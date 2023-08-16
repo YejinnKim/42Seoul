@@ -30,12 +30,8 @@ int main()
 	return 0;
 }
 
-// void	test() { system("leaks ex03"); }
-
 // int main()
 // {
-// 	atexit(test);
-
 // 	IMateriaSource *src = new MateriaSource();
 // 	ICharacter *me = new Character("me");
 // 	ICharacter *bob = new Character("bob");

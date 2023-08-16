@@ -9,20 +9,19 @@ int main()
 
 	for (int i=0; i < 4; i++)
 	{
-		std::cout << i+1 << std::endl;
 		if (i < 2)
 			animal[i] = new Dog();
 		else
 			animal[i] = new Cat();
+		std::cout << std::endl;
 	}
-	std::cout << std::endl;
 	for (int i=0; i < 4; i++)
 	{
-		std::cout << i+1 << std::endl;
 		delete animal[i];
+		std::cout << std::endl;
 	}
 
-	std::cout << std::endl << "-----DeepCopy Test-----" << std::endl;
+	std::cout << "-----DeepCopy Test-----" << std::endl;
 	Cat *cat1 = new Cat();
 	Cat *cat2 = new Cat();
 	std::cout << std::endl;
@@ -32,7 +31,7 @@ int main()
 	std::cout << std::endl;
 
 	*cat1 = *cat2;
-	cat1->getBrain().setIdea("new idea!");
+	cat1->getBrain().setIdea(0, "new idea!");
 	std::cout << std::endl;
 
 	std::cout << cat1->getBrain().getIdea(0) << std::endl;

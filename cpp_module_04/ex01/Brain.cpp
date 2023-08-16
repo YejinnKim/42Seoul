@@ -36,7 +36,7 @@ std::string Brain::getIdea(int i)
 	return ideas[i];
 }
 
-void	Brain::setIdea(std::string idea)
+void	Brain::setIdea(int i, std::string idea)
 {
-	ideas[0] = idea;
+	ideas[i] = idea;
 }
