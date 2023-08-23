@@ -53,7 +53,7 @@ const int&	Form::getExecuteGrade() const
 
 void	Form::beSigned(Bureaucrat& b)
 {
-	if (b.getGrade() <= signGrade && b.getGrade() <= executeGrade)
+	if (b.getGrade() <= signGrade)
 	{
 		sign = true;
 		std::cout << b.getName() << " signed " << name << std::endl;
