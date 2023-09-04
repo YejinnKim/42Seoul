@@ -2,21 +2,21 @@
 #include <fstream>
 
 ShrubberyCreationForm::ShrubberyCreationForm()
-	: AForm("default", 145, 137)
+	: AForm("ShrubberyCreationForm", 145, 137)
 {
-	
+	target = "default";
 }
 
-ShrubberyCreationForm::ShrubberyCreationForm(std::string name)
-	: AForm(name, 145, 137)
+ShrubberyCreationForm::ShrubberyCreationForm(std::string target)
+	: AForm("ShrubberyCreationForm", 145, 137)
 {
-	
+	this->target = target;
 }
 
 ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &ref)
 	: AForm(ref.getName(), ref.getSignGrade(), ref.getExecuteGrade())
 {
-
+	target = ref.target;
 }
 
 ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm &ref)
@@ -27,6 +27,7 @@ ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationF
 		setSign(ref.getSign());
 		setSignGrade(ref.getSignGrade());
 		setExecuteGrade(ref.getExecuteGrade());
+		target = ref.target;
 	}
 	return *this;
 }
@@ -38,8 +39,9 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
+	std::cout << executor.getName() << " executed " << getName() << std::endl;
 	std::ofstream ofs;
-	ofs.open(executor.getName() + "_shrubbery");
+	ofs.open(target + "_shrubbery");
 	ofs <<	"	         ,@@@@@@@,\n"
 			"    ,,,.   ,@@@@@@/@@,  .oo8888o.\n"
 			" ,&%%&%&&%,@@@@@/@@@@@@,8888\\88/8o\n"

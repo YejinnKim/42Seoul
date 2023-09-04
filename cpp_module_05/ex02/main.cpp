@@ -9,17 +9,18 @@ int main()
 	try
 	{
 		Bureaucrat b("yejinkim", 1);
-	
-		ShrubberyCreationForm s("SForm"); // sign: 145, exec: 137
-		RobotomyRequestForm r("RForm"); // sign: 72, exec: 45
-		PresidentialPardonForm p("PForm"); // sign: 25, exec: 5
+		// Bureaucrat b("yejinkim", 140);
 
+		ShrubberyCreationForm s("home"); // sign: 145, exec: 137
 		b.signForm(s);
-		b.signForm(r);
-		b.signForm(p);
-
 		b.executeForm(s);
+
+		RobotomyRequestForm r("testRobot"); // sign: 72, exec: 45
+		b.signForm(r);
 		b.executeForm(r);
+
+		PresidentialPardonForm p("testUser"); // sign: 25, exec: 5
+		b.signForm(p);
 		b.executeForm(p);
 	}
 	catch(std::exception & e)

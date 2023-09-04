@@ -5,9 +5,9 @@ int main()
 {
 	try
 	{
-		Bureaucrat b("b", 1);
-		// Bureaucrat b("b", 3);
-		Form f("f", 1, 2);
+		Bureaucrat b("yejinkim", 1);
+		// Bureaucrat b("yejinkim", 3);
+		Form f("Form", 1, 2);
 		std::cout << b << std::endl;
 		std::cout << f << std::endl;
 

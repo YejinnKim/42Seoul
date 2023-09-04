@@ -4,24 +4,24 @@ int main()
 {
 	try
 	{
-		Bureaucrat a("a", 1);
-		std::cout << a << std::endl;
-		a.decrementGrade();
-		a.decrementGrade();
-		a.decrementGrade();
-		std::cout << a << std::endl;
-		a.incrementGrade();
-		std::cout << a << std::endl;
+		Bureaucrat b("yejinkim", 1);
+		std::cout << b << std::endl;
+		b.decrementGrade();
+		b.decrementGrade();
+		b.decrementGrade();
+		std::cout << b << std::endl;
+		b.incrementGrade();
+		std::cout << b << std::endl;
 
-		// Bureaucrat b("b", 0);
+		// Bureaucrat test("test", 0);
+		
+		// Bureaucrat test("test", 1);
+		// std::cout << test << std::endl;
+		// test.incrementGrade();
 
-		// Bureaucrat c("c", 1);
-		// std::cout << c << std::endl;
-		// c.incrementGrade();
-
-		// Bureaucrat d("d", 150);
-		// std::cout << d << std::endl;
-		// d.decrementGrade();
+		// Bureaucrat test("test", 150);
+		// std::cout << test << std::endl;
+		// test.decrementGrade();
 	}
 	catch (std::exception & e)
 	{

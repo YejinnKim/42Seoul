@@ -5,9 +5,11 @@
 
 class RobotomyRequestForm : public AForm
 {
+	private:
+		std::string	target;
 	public:
 		RobotomyRequestForm();
-		RobotomyRequestForm(std::string name);
+		RobotomyRequestForm(std::string target);
 		RobotomyRequestForm(const RobotomyRequestForm &ref);
 		RobotomyRequestForm& operator=(const RobotomyRequestForm &ref);
 		~RobotomyRequestForm();

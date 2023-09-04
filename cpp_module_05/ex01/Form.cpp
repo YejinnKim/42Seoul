@@ -10,7 +10,10 @@ Form::Form()
 Form::Form(std::string name, int signGrade, int executeGrade)
 	: name(name), sign(false), signGrade(signGrade), executeGrade(executeGrade)
 {
-
+	if (signGrade < 1 || executeGrade < 1)
+		throw GradeTooHighException();
+	else if (signGrade > 150 || executeGrade > 150)
+		throw GradeTooLowException();
 }
 
 Form::Form(const Form &ref)
@@ -22,7 +25,12 @@ Form::Form(const Form &ref)
 Form& Form::operator=(const Form &ref)
 {
 	if (this != &ref)
-		sign = ref.sign;
+	{
+		const_cast<std::string&>(name) = ref.getName();
+		sign = ref.getSign();
+		const_cast<int&>(signGrade) = ref.getSignGrade();
+		const_cast<int&>(executeGrade) = ref.getExecuteGrade();
+	}
 	return *this;
 }
 
@@ -53,16 +61,8 @@ const int&	Form::getExecuteGrade() const
 
 void	Form::beSigned(Bureaucrat& b)
 {
-	if (b.getGrade() <= signGrade)
-	{
-		sign = true;
-		std::cout << b.getName() << " signed " << name << std::endl;
-	}
-	else
-	{
-		std::cerr << b.getName() << " couldn’t sign " << name << " because ";
-		throw GradeTooLowException();
-	}
+	std::cout << b.getName() << " signed " << name << std::endl;
+	sign = true;
 }
 
 const char* Form::GradeTooHighException::what() const throw()
