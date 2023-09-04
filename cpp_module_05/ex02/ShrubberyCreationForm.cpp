@@ -1,5 +1,5 @@
 #include "ShrubberyCreationForm.hpp"
-#include "Bureaucrat.hpp"
+#include <fstream>
 
 ShrubberyCreationForm::ShrubberyCreationForm()
 	: AForm("default", 145, 137)
@@ -22,7 +22,12 @@ ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &ref)
 ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm &ref)
 {
 	if (this != &ref)
+	{
+		setName(ref.getName());
 		setSign(ref.getSign());
+		setSignGrade(ref.getSignGrade());
+		setExecuteGrade(ref.getExecuteGrade());
+	}
 	return *this;
 }
 
@@ -33,16 +38,6 @@ ShrubberyCreationForm::~ShrubberyCreationForm()
 
 void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {
-	if (getSign() == false)
-	{
-		std::cerr << executor.getName() << " couldn’t execute " << getName() << " because ";
-		throw NotSignedException();
-	}
-	if (executor.getGrade() > getExecuteGrade())
-	{
-		std::cerr << executor.getName() << " couldn’t execute " << getName() << " because ";
-		throw GradeTooLowException();	
-	}
 	std::ofstream ofs;
 	ofs.open(executor.getName() + "_shrubbery");
 	ofs <<	"	         ,@@@@@@@,\n"

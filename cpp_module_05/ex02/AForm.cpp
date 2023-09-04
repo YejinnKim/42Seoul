@@ -1,5 +1,4 @@
 #include "AForm.hpp"
-#include "Bureaucrat.hpp"
 
 AForm::AForm()
 	: name("default"), sign(false), signGrade(1), executeGrade(1)
@@ -22,7 +21,12 @@ AForm::AForm(const AForm &ref)
 AForm& AForm::operator=(const AForm &ref)
 {
 	if (this != &ref)
-		sign = ref.sign;
+	{
+		const_cast<std::string&>(name) = ref.getName();
+		sign = ref.getSign();
+		const_cast<int&>(signGrade) = ref.getSignGrade();
+		const_cast<int&>(executeGrade) = ref.getExecuteGrade();
+	}
 	return *this;
 }
 
@@ -51,24 +55,30 @@ const int&	AForm::getExecuteGrade() const
 	return executeGrade;
 }
 
+void	AForm::setName(const std::string &name)
+{
+	const_cast<std::string&>(this->name) = name;
+}
+
 void	AForm::setSign(bool sign)
 {
 	this->sign = sign;
 }
 
-
-void	AForm::beSigned(Bureaucrat& b)
+void	AForm::setSignGrade(int signGrade)
 {
-	if (b.getGrade() <= signGrade)
-	{
-		sign = true;
-		std::cout << b.getName() << " signed " << name << std::endl;
-	}
-	else
-	{
-		std::cerr << b.getName() << " couldn’t sign " << name << " because ";
-		throw GradeTooLowException();
-	}
+	const_cast<int&>(this->signGrade) = signGrade;
+}
+
+void	AForm::setExecuteGrade(int executeGrade)
+{
+	const_cast<int&>(this->executeGrade) = executeGrade;
+}
+
+void	AForm::beSigned(const Bureaucrat& b)
+{
+	std::cout << b.getName() << " signed " << name << std::endl;
+	sign = true;
 }
 
 const char* AForm::GradeTooHighException::what() const throw()

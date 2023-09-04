@@ -1,9 +1,7 @@
 #ifndef AFORM_HPP
 #define AFORM_HPP
 
-#include <iostream>
-
-class Bureaucrat;
+#include "Bureaucrat.hpp"
 
 class AForm
 {
@@ -12,6 +10,11 @@ class AForm
 		bool				sign;
 		const int			signGrade;
 		const int			executeGrade;
+	protected:
+		void	setName(const std::string &name);
+		void	setSign(bool sign);
+		void	setSignGrade(int signGrade);
+		void	setExecuteGrade(int executeGrade);
 	public:
 		AForm();
 		AForm(std::string name, int signGrade, int executeGrade);
@@ -23,9 +26,8 @@ class AForm
 		bool				getSign() const;
 		const int&			getSignGrade() const;
 		const int&			getExecuteGrade() const;
-		void				setSign(bool sign);
 
-		void			beSigned(Bureaucrat& b);
+		void			beSigned(const Bureaucrat& b);
 		virtual void	execute(Bureaucrat const & executor) const = 0;
 
 		class GradeTooHighException : public std::exception
