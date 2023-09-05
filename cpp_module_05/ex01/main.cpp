@@ -8,6 +8,8 @@ int main()
 		Bureaucrat b("yejinkim", 1);
 		// Bureaucrat b("yejinkim", 3);
 		Form f("Form", 1, 2);
+		// Form f("Form", 0, 2);
+		
 		std::cout << b << std::endl;
 		std::cout << f << std::endl;
 
