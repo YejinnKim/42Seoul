@@ -2,6 +2,8 @@
 #define SCALARCONVERTER_HPP
 
 #include <iostream>
+#include <iomanip>
+#include <limits>
 
 class ScalarConverter
 {
@@ -16,8 +18,8 @@ class ScalarConverter
 		static size_t	findDot(const std::string &input);
 		static void		convertChar(double value);
 		static void		convertInt(double value);
-		static void		convertFloat(double value, char sign, size_t dot);
-		static void		convertDouble(double value, char sign, size_t dot);
+		static void		convertFloat(double value, char sign);
+		static void		convertDouble(double value, char sign);
 		static void		convert(const std::string &input);
 };
 

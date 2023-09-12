@@ -31,8 +31,8 @@ bool	ScalarConverter::checkValue(const std::string &input, double value)
 		if (input[i] == '.')
 			dot++;
 	}
-	if (std::isnan(value) || std::isinf(value) || (i == len && \
-		(value != 0.0 || (value == 0.0 && input.find("0") != std::string::npos))))
+	if (isnan(value) || isinf(value) \
+		|| (i == len && (value != 0.0 || (value == 0.0 && input.find("0") != std::string::npos))))
 		return true;
 	std::cout << "conversion failed!" << std::endl;
 	return false;
@@ -55,9 +55,9 @@ size_t	ScalarConverter::findDot(const std::string &input)
 void	ScalarConverter::convertChar(double value)
 {
 	std::cout << "char: ";
-	if (std::isnan(value) || std::isinf(value))
+	if (isnan(value) || value > std::numeric_limits<char>::max() || value < std::numeric_limits<char>::min())
 		std::cout << "impossible" << std::endl;
-	else if (!std::isprint(value))
+	else if (!isprint(value))
 		std::cout << "Non displayable" << std::endl;
 	else
 		std::cout << "'" << static_cast<char>(value) << "'" << std::endl;
@@ -67,66 +67,56 @@ void	ScalarConverter::convertChar(double value)
 void	ScalarConverter::convertInt(double value)
 {
 	std::cout << "int: ";
-	if (std::isnan(value) || value > INT_MAX || value < INT_MIN)
+	if (isnan(value) || value > std::numeric_limits<int>::max() || value < std::numeric_limits<int>::min())
 		std::cout << "impossible" << std::endl;
 	else
 		std::cout << static_cast<int>(value) << std::endl;
 }
 
-void	ScalarConverter::convertFloat(double value, char sign, size_t dot)
+void	ScalarConverter::convertFloat(double value, char sign)
 {
 	std::cout << "float: ";
-	if (std::isnan(value))
+	if (isnan(value))
 		std::cout << "nanf" << std::endl;
-	else if (std::isinf(value))
+	else if (isinf(value) || value > std::numeric_limits<float>::max() || value < std::numeric_limits<float>::min())
 	{
 		if (sign == '-' || sign == '+')
 			std::cout << sign;
 		std::cout << "inff" << std::endl;
 	}
 	else
-	{
-		std::cout << static_cast<float>(value);
-		if (dot == std::string::npos)
-			std::cout << ".0f" << std::endl;
-		else
-			std::cout << "f" << std::endl;
-	}
+		std::cout << std::fixed << std::setprecision(1) << static_cast<float>(value) << "f" << std::endl;
 }
 
-void	ScalarConverter::convertDouble(double value, char sign, size_t dot)
+void	ScalarConverter::convertDouble(double value, char sign)
 {
 	std::cout << "double: ";
-	if (std::isnan(value))
+	if (isnan(value))
 		std::cout << "nan" << std::endl;
-	else if (std::isinf(value))
+	else if (isinf(value) || value > std::numeric_limits<double>::max() || value < std::numeric_limits<double>::min())
 	{
 		if (sign == '-' || sign == '+')
 			std::cout << sign;
 		std::cout << "inf" << std::endl;
 	}
 	else
-	{
-		std::cout << static_cast<double>(value);
-		if (dot == std::string::npos)
-			std::cout << ".0" << std::endl;
-		else
-			std::cout << std::endl;
-	}
+		std::cout << std::fixed << std::setprecision(1) << static_cast<double>(value) << std::endl;
 }
 
 void	ScalarConverter::convert(const std::string &input)
 {
 	double value = std::strtod(input.c_str(), nullptr);
 	
-	if (!checkValue(input, value))
+	std::cout << "float: " << static_cast<float>(value) << std::endl
+		<< "double: " << static_cast<double>(value) << std::endl << std::endl;	
+	
+	if (input.length() == 1 && !isdigit(input[0]))
+		value = static_cast<double>(input[0]);
+	else if (!checkValue(input, value))
 		return;
-
-	size_t dot = findDot(input);
-	char sign = input[0];
 
 	convertChar(value);
 	convertInt(value);
-	convertFloat(value, sign, dot);
-	convertDouble(value, sign, dot);
+	convertFloat(value, input[0]);
+	convertDouble(value, input[0]);
 }
