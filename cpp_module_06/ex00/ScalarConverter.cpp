@@ -4,13 +4,11 @@ ScalarConverter::ScalarConverter() {}
 
 ScalarConverter::ScalarConverter(const ScalarConverter &obj)
 {
-	*this = obj;
+	(void)obj;
 }
 
 ScalarConverter& ScalarConverter::operator=(const ScalarConverter &obj)
 {
-	if (this != &obj)
-		*this = obj;
 	return *this;
 }
 
@@ -20,7 +18,6 @@ bool	ScalarConverter::checkValue(const std::string &input, double value)
 {
 	int len = input.length();
 	int dot = 0;
-	int chk = 0;
 	int i;
 	for (i = 0; i < len; i++)
 	{
@@ -31,16 +28,29 @@ bool	ScalarConverter::checkValue(const std::string &input, double value)
 			break;
 		if (input[i] == '.')
 			dot++;
-		if (dot && input[i] > '0')
-			chk++;
 	}		
-	if ((!dot && ((!isdigit(input[0]) && len < 8) || (isdigit(input[0]) && len < 7))) || (dot && !chk))
-		std::cout << std::fixed << std::setprecision(1);
 	if (isnan(value) || isinf(value) \
 		|| (i == len && (value != 0.0 || (value == 0.0 && input.find("0") != std::string::npos))))
 		return true;
 	std::cout << "conversion failed!" << std::endl;
 	return false;
+}
+
+void	ScalarConverter::checkDot(double value)
+{
+	std::stringstream ss;
+	ss << value;
+	std::string str = ss.str();
+	int len = str.length();
+	for (int i = 0; i < len; i++)
+	{
+		if (!(isdigit(str[i]) || str[i] == '-'))
+			return;
+	}
+	if (str[0] == '-')
+		len--;
+	if (str.find(".") == std::string::npos && len < 7)
+		std::cout << std::fixed << std::setprecision(1);
 }
 
 void	ScalarConverter::convertChar(double value)
@@ -99,7 +109,8 @@ void	ScalarConverter::convertDouble(double value, char sign)
 		if (isinf(value) || value > std::numeric_limits<double>::max() || value < std::numeric_limits<double>::lowest())
 		{
 			if (sign == '-')
-				std::cout << "inf" << std::endl;
+				std::cout << "-";
+			std::cout << "inf" << std::endl;
 		}
 		else
 			std::cout << static_cast<double>(value) << std::endl;
@@ -109,15 +120,12 @@ void	ScalarConverter::convertDouble(double value, char sign)
 void	ScalarConverter::convert(const std::string &input)
 {
 	double value = std::strtod(input.c_str(), nullptr);
-	// 123456.1 (6자리 + 소수점)
-	std::cout << "int: " << static_cast<int>(value) << std::endl
-		<< "float: " << static_cast<float>(value) << std::endl
-		<< "double: " << static_cast<double>(value) << std::endl << std::endl;
 
 	if (input.length() == 1 && !isdigit(input[0]))
 		value = static_cast<double>(input[0]);
 	else if (!checkValue(input, value))
 		return;
+	checkDot(value);
 
 	convertChar(value);
 	convertInt(value, input[0]);
