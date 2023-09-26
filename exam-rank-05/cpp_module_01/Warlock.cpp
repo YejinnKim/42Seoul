@@ -33,7 +33,8 @@ void Warlock::introduce() const { std::cout << name << ": I am " << name << ", "
 void Warlock::learnSpell(ASpell* spell)
 {
 	if (spell)
-		arr.insert(std::pair<std::string, ASpell*>(spell->getName(), spell->clone()));
+		if (arr.find(spell->getName()) == arr.end()) // ***추가***
+			arr.insert(std::pair<std::string, ASpell*>(spell->getName(), spell->clone()));
 }
 
 void Warlock::forgetSpell(std::string spellname)
@@ -46,7 +47,10 @@ void Warlock::forgetSpell(std::string spellname)
 
 void Warlock::launchSpell(std::string spellname, ATarget &target)
 {
-	ASpell *spell = arr[spellname];
-	if (spell)
-		spell->launch(target);
+	if (arr.find(spellname) != arr.end()) // ***추가***
+	{	// ***중요***
+		ASpell *spell = arr[spellname];
+		if (spell)
+			spell->launch(target);
+	}
 }

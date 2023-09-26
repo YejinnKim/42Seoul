@@ -9,7 +9,11 @@ ASpell::ASpell(const std::string &name, const std::string &effects)
 	this->effects = effects;
 }
 
-ASpell::ASpell(const ASpell &obj) { *this = obj; }
+ASpell::ASpell(const ASpell &obj)
+{
+	name = obj.name;
+	effects = obj.effects;
+}
 
 ASpell& ASpell::operator=(const ASpell &obj) 
 {
