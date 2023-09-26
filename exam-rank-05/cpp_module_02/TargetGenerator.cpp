@@ -31,8 +31,7 @@ void TargetGenerator::forgetTargetType(std::string const &name)
 
 ATarget* TargetGenerator::createTarget(std::string const &name)
 {
-	std::map<std::string, ATarget*>::iterator it = arr.find(name);
-	if (it != arr.end())
+	if (arr.find(name) != arr.end())
 		return arr[name];
 	return NULL;
 }

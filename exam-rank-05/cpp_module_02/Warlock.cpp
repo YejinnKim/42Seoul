@@ -25,9 +25,11 @@ void Warlock::forgetSpell(std::string name) { book.forgetSpell(name); }
 
 void Warlock::launchSpell(std::string name, ATarget &target)
 {
+	// ***확인***
 	ATarget const *test = 0;
 	if (test == &target)
 		return ;
+	// ***중요***
 	ASpell *tmp = book.createSpell(name);
 	if (tmp)
 		tmp->launch(target);
