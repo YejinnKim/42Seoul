@@ -42,6 +42,13 @@ void	Span::addNumber(int value)
 	}
 }
 
+void	Span::addManyNumbers()
+{
+	srand(time(NULL));
+	for (unsigned int i = v.size(); i < n; i++)
+		addNumber(rand() % 100);
+}
+
 void Span::printNumber()
 {
 	for (size_t i = 0; i < v.size(); i++)

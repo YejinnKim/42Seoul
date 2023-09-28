@@ -2,7 +2,6 @@
 
 int main()
 {
-	// subject test
 	Span sp = Span(5);
 
 	// sp.shortestSpan(); // error 
@@ -16,15 +15,12 @@ int main()
 	// sp.addNumber(11); // error
 
 	std::cout << sp.shortestSpan() << std::endl;
-	std::cout << sp.longestSpan() << std::endl;
+	std::cout << sp.longestSpan() << std::endl << std::endl;
 
-	// my test
-	unsigned int N = 10000;
-	Span sp2 = Span(N);
+	// --- Many Numbers ---
+	Span sp2 = Span(10000);
 
-	srand(time(NULL));
-	for (unsigned int i = 0; i < N; i++)
-		sp2.addNumber(rand() % 100);
+	sp2.addManyNumbers();
 
 	std::cout << sp2.shortestSpan() << std::endl;
 	std::cout << sp2.longestSpan() << std::endl;
