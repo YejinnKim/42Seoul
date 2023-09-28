@@ -10,6 +10,7 @@ int main()
 	v.push_back(3);
 
 	std::cout << *easyfind(v, 2) << std::endl;
+	std::cout << *easyfind(v, 4) << std::endl; // not found
 
 	return 0;
 }

@@ -1,4 +1,5 @@
 #include "MutantStack.hpp"
+#include <list>
 
 int main()
 {
@@ -59,5 +60,14 @@ int main()
 		++it_list;
 	}
 	std::list<int> l(list);
+	std::cout << std::endl;
+
+	// --- reverse iterator ---
+	MutantStack<int>::reverse_iterator rit = mstack.rbegin();
+	while (rit != mstack.rend())
+	{
+		std::cout << *rit << std::endl;
+		++rit;
+	}
 	return 0;
 }

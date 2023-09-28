@@ -62,9 +62,10 @@ int	Span::shortestSpan()
 	{
 		if (v.size() < 2)
 			throw std::logic_error("Vector size is less then 2!");
+		
 		std::vector<int> diff(v.size());
 		std::adjacent_difference(v.begin(), v.end(), diff.begin());
-		for (size_t i=0; i<diff.size(); i++)
+		for (size_t i = 1; i < diff.size(); i++)
 			diff[i] = std::abs(diff[i]);
 		int min = *std::min_element(++diff.begin(), diff.end());
 		return min;
@@ -82,6 +83,7 @@ int	Span::longestSpan()
 	{
 		if (v.size() < 2)
 			throw std::logic_error("Vector size is less then 2!");
+		
 		int max = *std::max_element(v.begin(), v.end());
 		int min = *std::min_element(v.begin(), v.end());
 		return max - min;
