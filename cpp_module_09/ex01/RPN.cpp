@@ -21,8 +21,13 @@ bool	RPN::isoperator(char c)
 		return false;
 }
 
-int	RPN::calculator(int num1, int num2, char op)
+int	RPN::calculator(char op)
 {
+	int num1 = stack.top();
+	stack.pop();
+	int num2 = stack.top();
+	stack.pop();
+
 	if (op == '+')
 		return num2 + num1;
 	else if (op == '-')
@@ -46,13 +51,7 @@ void	RPN::calculate(const std::string &input)
 		else if (isdigit(input[i]))
 			stack.push(input[i] - '0');
 		else if (isoperator(input[i]) && stack.size() >= 2)
-		{
-			int num1 = stack.top();
-			stack.pop();
-			int num2 = stack.top();
-			stack.pop();
-			stack.push(calculator(num1, num2, input[i]));
-		}
+			stack.push(calculator(input[i]));
 		else
 			printError();
 	}

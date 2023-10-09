@@ -15,7 +15,7 @@ class RPN
 		~RPN();
 
 		void	calculate(const std::string &input);
-		int		calculator(int num1, int num2, char op);
+		int		calculator(char op);
 		bool	isoperator(char c);
 };
 
