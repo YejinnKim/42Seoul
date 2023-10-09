@@ -16,6 +16,8 @@ class BitcoinExchange
 		BitcoinExchange& operator=(const BitcoinExchange &obj);
 		~BitcoinExchange();
 
+		bool		checkFormat(const std::string &date);
+		bool		checkValid(int year, int month, int day);
 		std::string	parseDate(const std::string &line, size_t pos, bool exitFlag);
 		double		parseRate(const std::string &line, size_t pos);
 		double		parseValue(const std::string &line, size_t pos);
