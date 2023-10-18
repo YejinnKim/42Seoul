@@ -1,30 +1,8 @@
 #include "PmergeMe.hpp"
 
-PmergeMe::PmergeMe()
-{
-	vectorTime = 0;
-	listTime = 0;
-	k = 1;
-}
+PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(const PmergeMe &obj) { *this = obj; }
-
-PmergeMe& PmergeMe::operator=(const PmergeMe &obj)
-{
-	if (this != &obj)
-	{
-		this->vector = obj.vector;
-		this->list = obj.list;
-		this->vectorTime = obj.vectorTime;
-		this->listTime = obj.listTime;
-		this->k = obj.k;
-	}
-	return *this;
-}
-
-PmergeMe::~PmergeMe() {}
-
-void	PmergeMe::init(int argc, char **argv)
+PmergeMe::PmergeMe(int argc, char **argv)
 {
 	for (int i = 1; i < argc; i++)
 	{
@@ -33,105 +11,165 @@ void	PmergeMe::init(int argc, char **argv)
 				printError();
 		int value = atoi(argv[i]);
 		vector.push_back(value);
-		list.push_back(value);
 	}
-	k = vector.size() / 2;
 }
 
-void	PmergeMe::sort()
+PmergeMe::PmergeMe(const PmergeMe &obj) { *this = obj; }
+
+PmergeMe& PmergeMe::operator=(const PmergeMe &obj)
 {
-	std::cout << "Before:	";
+	if (this != &obj)
+	{
+		vector = obj.vector;
+		list = obj.list;
+		startTime = obj.startTime;
+		vectorTime = obj.vectorTime;
+		listTime = obj.listTime;
+	}
+	return *this;
+}
+
+PmergeMe::~PmergeMe() {}
+
+void	PmergeMe::printVector() const
+{
 	for (size_t i = 0; i < vector.size(); i++)
 		std::cout << vector[i] << " ";
 	std::cout << std::endl;
+}
 
-	vectorSort();
-	// listSort();
-
-	std::cout << "After:	";
-	for (size_t i = 0; i < vector.size(); i++)
-		std::cout << vector[i] << " ";
-	std::cout << std::endl;
-
+void	PmergeMe::printTime() const
+{
 	std::cout << "Time to process a range of " << vector.size() << " elements with std::vector : " << vectorTime << " us" << std::endl;
 	std::cout << "Time to process a range of " << list.size() << " elements with std::list : " << listTime << " us" << std::endl;
 }
 
-void	PmergeMe::vectorSort()
+void	PmergeMe::sortVector()
 {
-	clock_t start = clock();
-	vectorInsertionSort(0, vector.size() - 1);
-	clock_t end = clock();
-	vectorTime = (end - start) / 1000;
+	startTime = clock();
+
+	size_t len = vector.size();
+	if (len < 2)
+		return ;
+	
+	int last = 0;
+	if (len % 2 != 0)
+		last = vector[len - 1];
+
+	std::vector< std::pair<int, int> > tmp;
+	for (size_t i = 0; i + 1 < len; i += 2)
+	{
+		std::pair<int, int> pair;
+		if (vector[i] < vector[i + 1])
+		{
+			pair.first = vector[i + 1];
+			pair.second = vector[i];
+		}
+		else
+		{
+			pair.first = vector[i];
+			pair.second = vector[i + 1];
+		}
+		tmp.push_back(pair);
+	}
+
+	mergeSort(tmp, 0, len / 2);
+
+	std::vector<int> main, pending;
+	for (size_t i = 0; i < len / 2; i++)
+	{
+		main.push_back(tmp[i].first);
+		pending.push_back(tmp[i].second);
+	}
+
+	size_t jacob1 = 1, jacob2 = 1;
+	size_t i = 0, index, pendSize = pending.size();
+	
+	main.insert(main.begin(), pending[0]);
+	while (i < pendSize)
+	{
+		if (i == jacob1 - 1)
+		{
+			if (jacob2 >= pendSize)
+				break;
+
+			size_t tmp = jacob2;
+			jacob2 = jacob2 + (jacob1 * 2);
+			jacob1 = tmp;
+
+			if (jacob2 > pendSize)
+				i = pendSize - 1;
+			else
+				i = jacob2 - 1;
+		}
+
+		index = binarySearch(main, 0, main.size(), pending[i]);
+		main.insert(main.begin() + index, pending[i]);
+		i--;
+	}
+	if (last)
+	{
+		index = binarySearch(main, 0, main.size(), last);
+		main.insert(main.begin() + index, last);
+	}
+	
+	for (i = 0; i < len; i++)
+		vector[i] = main[i];
+
+	vectorTime = (double)(clock() - startTime);
 }
 
-void	PmergeMe::vectorMergeInsertionSort(int left, int right)
+void	PmergeMe::mergeSort(std::vector< std::pair<int, int> > &arr, size_t start, size_t end)
 {
-    if (left < right) {
-        if (right - left <= k) {
-            vectorInsertionSort(left, right);
-        } else {
-            int mid = left + (right - left) / 2;
-            vectorMergeInsertionSort(left, mid);
-            vectorMergeInsertionSort(mid + 1, right);
-            vectorMerge(left, mid, right);
-        }
-    }
+	if (end - start > 1)
+	{
+		size_t mid = start + (end - start) / 2;
+
+		mergeSort(arr, start, mid);
+		mergeSort(arr, mid, end);
+
+		std::vector< std::pair<int, int> > ret(end - start);
+
+		size_t i = start, j = mid, k = 0;
+		while (i < mid && j < end)
+		{
+			if (arr[i].first < arr[j].first)
+				ret[k++] = arr[i++];
+			else
+				ret[k++] = arr[j++];
+		}
+		while (i < mid)
+			ret[k++] = arr[i++];
+		while (j < end)
+			ret[k++] = arr[j++];
+		
+		for (k = 0, i = start; i < end; i++, k++)
+			arr[i] = ret[k];
+	}
 }
 
-void	PmergeMe::vectorInsertionSort(int left, int right)
+size_t	PmergeMe::binarySearch(std::vector<int> result, size_t start, size_t end, int target)
 {
-    for (int i = left + 1; i <= right; ++i) {
-        int key = vector[i];
-        int j = i - 1;
-        
-        while (j >= left && vector[j] > key) {
-            vector[j + 1] = vector[j];
-            j--;
-        }
+	if (end <= start)
+		return end;
 
-        vector[j + 1] = key;
-    }
+	size_t mid = start + (end - start) / 2;
+
+	if (result[mid] == target)
+		return mid;
+	else if (result[mid] < target)
+		return binarySearch(result, mid + 1, end, target);
+	else
+		return binarySearch(result, start, mid, target);
 }
 
-void	PmergeMe::vectorMerge(int left, int mid, int right)
+void	PmergeMe::sortList()
 {
-	int n1 = mid - left + 1;
-    int n2 = right - mid;
+	startTime = clock();
+	
+	// sort
 
-	std::vector<int> L, R;
-
-    for (int i = 0; i < n1; i++) {
-        L[i] = vector[left + i];
-    }
-    for (int j = 0; j < n2; j++) {
-        R[j] = vector[mid + 1 + j];
-    }
-
-    int i = 0, j = 0, k = left;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            vector[k] = L[i];
-            i++;
-        } else {
-            vector[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-
-    while (i < n1) {
-        vector[k] = L[i];
-        i++;
-        k++;
-    }
-
-    while (j < n2) {
-        vector[k] = R[j];
-        j++;
-        k++;
-    }
+	listTime = (double)(clock() - startTime);
 }
 
 void	printError()

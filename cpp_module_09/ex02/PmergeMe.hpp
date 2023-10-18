@@ -5,33 +5,32 @@
 #include <vector>
 #include <list>
 #include <ctime>
+#include <iomanip>
 
 class PmergeMe
 {
 	private:
 		std::vector<int>	vector;
 		std::list<int>		list;
-		clock_t	vectorTime;
-		clock_t	listTime;
-		int	k;
-	public:
+		clock_t	startTime;
+		double	vectorTime;
+		double	listTime;
+		
 		PmergeMe();
+		void	mergeSort(std::vector< std::pair<int, int> > &arr, size_t start, size_t end);
+		size_t	binarySearch(std::vector<int> result, size_t start, size_t end, int target);
+
+	public:
+		PmergeMe(int argc, char **argv);
 		PmergeMe(const PmergeMe &obj);
 		PmergeMe& operator=(const PmergeMe &obj);
 		~PmergeMe();
 
-		void	init(int argc, char **argv);
-		void	sort();
+		void	printVector() const;
+		void	printTime() const;
 
-		void	vectorSort();
-		void	vectorMergeInsertionSort(int left, int right);
-		void	vectorInsertionSort(int left, int right);
-		void	vectorMerge(int left, int mid, int right);
-
-		// void	listSort();
-		// void	listMergeInsertionSort();
-		// void	listInsertionSort();
-		// void	listMerge();
+		void	sortVector();
+		void	sortList();
 };
 
 void	printError();
