@@ -9,10 +9,10 @@ int main(int argc, char **argv)
 
 	std::cout << "Before:	";
 	p.printVector();
-	
+
 	p.sortVector();
-	p.sortList();
-	
+	p.sortDeque();
+
 	std::cout << "After:	";
 	p.printVector();
 
