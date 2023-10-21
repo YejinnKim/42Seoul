@@ -16,6 +16,8 @@ int main(int argc, char **argv)
 	std::cout << "After:	";
 	p.printVector();
 
+	p.checkSort();
+
 	p.printTime();
 
 	return 0;
