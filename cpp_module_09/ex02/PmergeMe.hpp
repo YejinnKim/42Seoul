@@ -13,21 +13,23 @@ class PmergeMe
 	private:
 		std::vector<int>	vector;
 		std::deque<int>		deque;
-		clock_t	startTime;
+		std::vector< std::pair<int, int> >	vtmp;
+		std::deque< std::pair<int, int> >	dtmp;
 		double	vectorTime;
 		double	dequeTime;
 
 		PmergeMe();
+		void	nextJacob(size_t &jacob1, size_t &jacob2);
 		// vector
-		size_t	binarySearch(std::vector<int> &arr, size_t start, size_t end, int target);
-		void	insertSort(std::vector<int> &main, std::vector<int> &pending, int last);
-		void	mergeSort(std::vector< std::pair<int, int> > &tmp, size_t start, size_t end);
-		void	createPair(std::vector< std::pair<int, int> > &tmp, size_t len);
+		size_t	binarySearchVector(size_t start, size_t end, int target);
+		void	insertSortVector(int last);
+		void	mergeSortVector(size_t start, size_t end);
+		void	createPairVector(size_t len);
 		// deque
-		size_t	binarySearch(std::deque<int> &arr, size_t start, size_t end, int target);
-		void	insertSort(std::deque<int> &main, std::deque<int> &pending, int last);
-		void	mergeSort(std::deque< std::pair<int, int> > &arr, size_t start, size_t end);
-		void	createPair(std::deque< std::pair<int, int> > &tmp, size_t len);
+		size_t	binarySearchDeque(size_t start, size_t end, int target);
+		void	insertSortDeque(int last);
+		void	mergeSortDeque(size_t start, size_t end);
+		void	createPairDeque(size_t len);
 	public:
 		PmergeMe(int argc, char **argv);
 		PmergeMe(const PmergeMe &obj);
