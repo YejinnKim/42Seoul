@@ -125,7 +125,7 @@ double	BitcoinExchange::findRate(const std::string &date)
 
 	if (it != data.end() && it == data.find(date))
 		rate = data[date];
-	else if (it != data.end())
+	else if (it != data.end() && it != data.begin())
 		rate = (--it)->second;
 	else
 	{
