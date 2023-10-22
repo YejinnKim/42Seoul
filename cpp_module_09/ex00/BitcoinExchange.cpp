@@ -106,9 +106,9 @@ double		BitcoinExchange::parseValue(const std::string &line, size_t pos)
 
 	if (*endptr != '\0')
 		printError("invalid value.", false);
-	else if (value < 0)
+	else if (value <= 0)
 		printError("not a positive number.", false);
-	else if (value > 1000)
+	else if (value >= 1000)
 		printError("too large a number.", false);
 	else
 		return value;
