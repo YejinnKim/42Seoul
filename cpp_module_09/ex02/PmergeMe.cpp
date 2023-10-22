@@ -25,6 +25,8 @@ PmergeMe& PmergeMe::operator=(const PmergeMe &obj)
 	{
 		vector = obj.vector;
 		deque = obj.deque;
+		vtmp = obj.vtmp;
+		dtmp = obj.dtmp;
 		vectorTime = obj.vectorTime;
 		dequeTime = obj.dequeTime;
 	}
@@ -69,11 +71,10 @@ size_t	PmergeMe::binarySearchVector(size_t start, size_t end, int target)
 {
 	if (end <= start)
 		return end;
-
 	size_t mid = start + (end - start) / 2;
-	if (vtmp[mid].first == target)
+	if (vector[mid] == target)
 		return mid;
-	else if (vtmp[mid].first < target)
+	else if (vector[mid] < target)
 		return binarySearchVector(mid + 1, end, target);
 	else
 		return binarySearchVector(start, mid, target);
@@ -84,7 +85,10 @@ void	PmergeMe::insertSortVector(int last)
 	size_t jacob1 = 1, jacob2 = 1;
 	size_t i = 0, index, size = vtmp.size();
 
-	vtmp.insert(vtmp.begin(), std::pair<int, int>(vtmp[0].second, 0));	
+	vector.clear();
+	for (size_t j=0; j < size; j++)
+		vector.push_back(vtmp[j].first);
+	vector.insert(vector.begin(), vtmp[0].second);
 	while (i < size)
 	{
 		if (i == jacob1 - 1)
@@ -97,14 +101,14 @@ void	PmergeMe::insertSortVector(int last)
 			else
 				i = jacob2 - 1;
 		}
-		index = binarySearchVector(0, vtmp.size(), vtmp[i].second);
-		vtmp.insert(vtmp.begin() + index, std::pair<int, int>(vtmp[i].second, 0));
+		index = binarySearchVector(0, vector.size(), vtmp[i].second);
+		vector.insert(vector.begin() + index, vtmp[i].second);
 		i--;
 	}
 	if (last)
 	{
-		index = binarySearchVector(0, vtmp.size(), last);
-		vtmp.insert(vtmp.begin() + index, std::pair<int, int>(last, 0));
+		index = binarySearchVector(0, vector.size(), last);
+		vector.insert(vector.begin() + index, last);
 	}
 }
 
@@ -126,10 +130,8 @@ void	PmergeMe::mergeSortVector(size_t start, size_t end)
 			else
 				sorted[k++] = vtmp[j++];
 		}
-		while (i < mid)
-			sorted[k++] = vtmp[i++];
-		while (j < end)
-			sorted[k++] = vtmp[j++];
+		while (i < mid) sorted[k++] = vtmp[i++];
+		while (j < end) sorted[k++] = vtmp[j++];
 
 		for (k = 0, i = start; i < end; i++, k++)
 			vtmp[i] = sorted[k];
@@ -163,9 +165,6 @@ void	PmergeMe::sortVector()
 	createPairVector(len);
 	insertSortVector(last);
 
-	for (size_t i = 0; i < len; i++)
-		vector[i] = vtmp[i].first;
-
 	vectorTime = (double)(clock() - startTime);
 }
 
@@ -173,11 +172,10 @@ size_t	PmergeMe::binarySearchDeque(size_t start, size_t end, int target)
 {
 	if (end <= start)
 		return end;
-
 	size_t mid = start + (end - start) / 2;
-	if (dtmp[mid].first == target)
+	if (deque[mid] == target)
 		return mid;
-	else if (dtmp[mid].first < target)
+	else if (deque[mid] < target)
 		return binarySearchDeque(mid + 1, end, target);
 	else
 		return binarySearchDeque(start, mid, target);
@@ -188,7 +186,10 @@ void	PmergeMe::insertSortDeque(int last)
 	size_t jacob1 = 1, jacob2 = 1;
 	size_t i = 0, index, size = dtmp.size();
 
-	dtmp.insert(dtmp.begin(), std::pair<int, int>(dtmp[0].second, 0));
+	deque.clear();
+	for (size_t j=0; j < size; j++)
+		deque.push_back(dtmp[j].first);
+	deque.insert(deque.begin(), dtmp[0].second);
 	while (i < size)
 	{
 		if (i == jacob1 - 1)
@@ -201,14 +202,14 @@ void	PmergeMe::insertSortDeque(int last)
 			else
 				i = jacob2 - 1;
 		}
-		index = binarySearchDeque(0, dtmp.size(), dtmp[i].second);
-		dtmp.insert(dtmp.begin() + index, std::pair<int, int>(dtmp[i].second, 0));
+		index = binarySearchDeque(0, deque.size(), dtmp[i].second);
+		deque.insert(deque.begin() + index, dtmp[i].second);
 		i--;
 	}
 	if (last)
 	{
-		index = binarySearchDeque(0, dtmp.size(), last);
-		dtmp.insert(dtmp.begin() + index, std::pair<int, int>(last, 0));
+		index = binarySearchDeque(0, deque.size(), last);
+		deque.insert(deque.begin() + index, last);
 	}
 }
 
@@ -230,10 +231,8 @@ void	PmergeMe::mergeSortDeque(size_t start, size_t end)
 			else
 				sorted[k++] = dtmp[j++];
 		}
-		while (i < mid)
-			sorted[k++] = dtmp[i++];
-		while (j < end)
-			sorted[k++] = dtmp[j++];
+		while (i < mid) sorted[k++] = dtmp[i++];
+		while (j < end) sorted[k++] = dtmp[j++];
 
 		for (k = 0, i = start; i < end; i++, k++)
 			dtmp[i] = sorted[k];
@@ -266,9 +265,6 @@ void	PmergeMe::sortDeque()
 
 	createPairDeque(len);	
 	insertSortDeque(last);
-
-	for (size_t i = 0; i < len; i++)
-		deque[i] = dtmp[i].first;
 
 	dequeTime = (double)(clock() - startTime);
 }
