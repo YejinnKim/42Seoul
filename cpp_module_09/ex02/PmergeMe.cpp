@@ -12,7 +12,7 @@ PmergeMe::PmergeMe(int argc, char **argv)
 			if (!isdigit(argv[i][j]))
 				printError();
 		int value = atoi(argv[i]);
-		if (value < 0)
+		if (value <= 0)
 			printError();
 		vector.push_back(value);
 		deque.push_back(value);
