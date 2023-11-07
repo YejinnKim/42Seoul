@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    build: ./requirements/nginx
+    ports:
+      - "443:443"
+
+  # wordpress:
+  #   image: wordpress
+  #   container_name: wordpress
+
+  # mariadb:
+  #   image: mariadb
+  #   container_name: mariadb
