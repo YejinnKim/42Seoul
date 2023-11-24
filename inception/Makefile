@@ -1,4 +1,6 @@
 all		:	
+			@mkdir -p ./home/yejinkim/data/mariadb # 상대경로 수정
+			@mkdir -p ./home/yejinkim/data/wordpress # 상대경로 수정
 			docker-compose -f srcs/docker-compose.yml up -d --build
 
 clean	:
@@ -6,9 +8,8 @@ clean	:
 
 fclean	:
 			docker-compose -f srcs/docker-compose.yml down --rmi all
-			docker volume prune
-			@rm -rf srcs/data/mariadb/*
-			@rm -rf srcs/data/wordpress/*
+			docker volume rm -f mariadb wordpress
+			@rm -rf ./home/yejinkim/data # 상대경로 수정
 
 re		:	fclean all
 
