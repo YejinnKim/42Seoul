@@ -6,6 +6,9 @@ clean	:
 
 fclean	:
 			docker-compose -f srcs/docker-compose.yml down --rmi all
+			docker volume prune
+			@rm -rf srcs/data/mariadb/*
+			@rm -rf srcs/data/wordpress/*
 
 re		:	fclean all
 

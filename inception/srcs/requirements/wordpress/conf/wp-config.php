@@ -1,8 +1,8 @@
 <?php
-define('DB_NAME', getenv('MYSQL_DATABASE'));
-define('DB_USER', getenv('MYSQL_USER'));
-define('DB_PASSWORD', getenv('MYSQL_PASSWORD'));
-define('DB_HOST', getenv('WORDPRESS_DB_HOST'));
+define('DB_NAME', 'wordpress');
+define('DB_USER', 'yejinkim');
+define('DB_PASSWORD', '0000');
+define('DB_HOST', 'mariadb');
 define('DB_SOCKET', '/run/mysqld/mysqld.sock');
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', '');
