@@ -1,15 +1,13 @@
 FROM debian:buster
 
 RUN apt-get update && \
-    apt-get install -y wget unzip php7.3 php7.3-fpm php7.3-mysql
+    apt-get install -y curl php7.3 php7.3-fpm php7.3-mysql default-mysql-client
 
 WORKDIR /var/www/html
 
-RUN wget https://wordpress.org/latest.tar.gz && \
-    tar -xzvf latest.tar.gz && \
-    rm latest.tar.gz
-
-COPY ./conf/wp-config.php /var/www/html/wordpress/
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
 
 COPY ./tools/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
