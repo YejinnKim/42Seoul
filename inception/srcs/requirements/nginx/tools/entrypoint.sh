@@ -2,9 +2,12 @@
 
 set -e
 
+cat /default.template \
+	| envsubst '$NGINX_PORT $DOMAIN_NAME $SSL_CERT $SSL_KEY $NGINX_WP_HOST $WORDPRESS_PORT' \
+	> /etc/nginx/sites-available/default
+
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout /etc/ssl/private/nginx_pkey.pem \
-	-out /etc/ssl/certs/nginx.crt \
-	-subj "/C=KR/ST=Seoul/L=Gangnam/O=42seoul/CN=yejinkim.42.kr"
+	-keyout $SSL_KEY -out $SSL_CERT \
+	-subj "/C=$CTY/L=$LOC/O=$ORG/CN=$DOMAIN_NAME"
 
 exec "$@"

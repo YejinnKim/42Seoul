@@ -1,9 +1,9 @@
 FROM debian:buster
 
 RUN apt-get update && \
-    apt-get install -y nginx openssl
+    apt-get install -y nginx openssl gettext
 
-COPY ./conf/default /etc/nginx/sites-available/
+COPY ./conf/default /default.template
 
 COPY ./tools/entrypoint.sh /
 RUN chmod +x /entrypoint.sh

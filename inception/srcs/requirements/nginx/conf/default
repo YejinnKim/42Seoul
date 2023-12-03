@@ -1,23 +1,23 @@
 server {
-    listen 443 ssl;
-    listen [::]:443 ssl;
+    listen $NGINX_PORT ssl;
+    listen [::]:$NGINX_PORT ssl;
 
-    server_name yejinkim.42.kr;
+    server_name $DOMAIN_NAME localhost;
 
-    ssl_protocols TLSv1.3;
-    ssl_certificate /etc/ssl/certs/nginx.crt;
-    ssl_certificate_key /etc/ssl/private/nginx_pkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_certificate $SSL_CERT;
+    ssl_certificate_key $SSL_KEY;
 
     root /var/www/html;
     index index.php;
 
     location / {
-        try_files $uri $uri/ /index.php?$args;
+        try_files $uri $uri/ =404;
     }
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass wordpress:9000;
+        fastcgi_pass $NGINX_WP_HOST:$WORDPRESS_PORT;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;
     }
