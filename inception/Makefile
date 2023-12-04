@@ -1,6 +1,6 @@
 all		:	
-			@if ! grep "127\.0\.0\.1[[:space:]]yejinkim.42.kr" "/etc/hosts"; then \
-				echo "127.0.0.1	yejinkim.42.kr" >> /etc/hosts; \
+			@if ! grep "127\.0\.0\.1[[:space:]]yejinkim.42.fr" "/etc/hosts"; then \
+				echo "127.0.0.1	yejinkim.42.fr" >> /etc/hosts; \
 			fi
 			@mkdir -p /home/yejinkim/data/mariadb
 			@mkdir -p /home/yejinkim/data/wordpress

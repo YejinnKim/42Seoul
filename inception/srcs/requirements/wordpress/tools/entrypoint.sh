@@ -10,7 +10,7 @@ wp core download --path=/var/www/html --allow-root
 wp core config --path=/var/www/html --dbname=$WORDPRESS_DATABASE --dbuser=$MYSQL_USER --dbpass=$MYSQL_PASSWORD --dbhost=$WORDPRESS_DB_HOST --allow-root
 wp core install --path=/var/www/html --url=https://$DOMAIN_NAME --title=inception \
 	--admin_user=$WORDPRESS_ADMIN --admin_password=$WORDPRESS_ADMIN_PASS --admin_email=$WORDPRESS_ADMIN_EMAIL --skip-email --allow-root
-wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASS --allow-root
+wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=subscriber --user_pass=$WORDPRESS_USER_PASS --allow-root
 fi
 
 exec "$@"
